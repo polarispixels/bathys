@@ -6,6 +6,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-07
+
+The re-scope to a book catalog, the production pipeline, and the tooling for the build. Live at https://bathys.polarispixels.com.
+
+### Added
+- The Bathys icon: a deep-blue tile with an open book over three depth bars. `scripts/generate-icons.py` draws it from one set of shapes into `public/icon.svg`, `favicon.svg`, `favicon.ico` (16, 32, 48 px), and `apple-touch-icon.png`, replacing the starter kit's icons.
+- The coming-soon page shows the icon, and the current version at the bottom. The version reaches every Inertia page as the shared `appVersion` prop, tested against `package.json`.
+
 ### Changed
 - **Re-scoped from a reading tool to a personal book catalog** (spec v0.4): the shelf, the wishlist, editable categories, and one rating per book, the Adler depth level (0 to 5) set directly. Version 1 adds books by hand, by title search, and by ISBN barcode scan. Passes, sessions, checklists, focus aids, captures, sections, the next-up picker, extra facets, relationships, syntopical work, review summaries, discovery, purchase links, and shelf-photo import moved to the spec's Later section.
 - Roadmap Phase 1 re-planned for the catalog; Phase 3 folded into Later; GitHub milestones renamed (Phase 1: Catalog, Phase 2: MCP, Later), and the queue-worker issue (#9) moved to Later.

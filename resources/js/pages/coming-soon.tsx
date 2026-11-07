@@ -1,10 +1,19 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 
 export default function ComingSoon() {
+    const { appVersion } = usePage().props;
+
     return (
         <>
             <Head title="Coming soon" />
             <main className="flex min-h-screen flex-col items-center justify-center bg-background px-6 text-center text-foreground">
+                <img
+                    src="/icon.svg"
+                    alt=""
+                    width={72}
+                    height={72}
+                    className="mb-6 rounded-2xl"
+                />
                 <h1 className="text-5xl font-semibold tracking-tight">
                     Bathys
                 </h1>
@@ -19,6 +28,9 @@ export default function ComingSoon() {
                     Coming soon.
                 </p>
             </main>
+            <footer className="fixed inset-x-0 bottom-0 pb-4 text-center text-xs text-muted-foreground/60">
+                v{appVersion}
+            </footer>
         </>
     );
 }
