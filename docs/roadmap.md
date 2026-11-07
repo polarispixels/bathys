@@ -12,14 +12,16 @@ Phase scope comes from [the spec's phasing](spec.md#suggested-phasing). Steps co
 
 | Item | Status |
 |---|---|
-| Product spec (v0.3), ADR-0001 to ADR-0009, README | done (docs only) |
+| Product spec (now v0.4), ADR-0001 to ADR-0010, README | done (docs only) |
 | Development method, deployment and secrets, CLAUDE.md, roadmap, changelog | done (docs only) |
+| Production at https://bathys.polarispixels.com (Forge, zero-downtime, Let's Encrypt) and the CI deploy job | done: live since v0.2.0 (the coming-soon page); the CI deploy job and the Forge setup are under Unreleased in the changelog |
+| Issue tracking (milestones, issue forms, triage) and AI tooling (`docs/ai-tooling.md`, four subagents, project plugins) | done (under Unreleased) |
 
 ## Phase 1: Catalog
 
 | Step | Item | Status |
 |---|---|---|
-| 0 | Scaffold Laravel 13 (React starter kit, Pest, Postgres, Boost, Pint, Larastan); `core/` autoload; architecture tests; version/changelog sync test; CI workflow without deploy | done v0.1.0: scaffold committed untouched, then PHP 8.4 pinned, Boost (Claude Code only), `core/` with dependency rules proven against a planted violation, release-consistency test, version meta tag, CI with Postgres. CI first runs once the GitHub repository exists. Local Postgres not yet installed (not needed until 1d). |
+| 0 | Scaffold Laravel 13 (React starter kit, Pest, Postgres, Boost, Pint, Larastan); `core/` autoload; architecture tests; version/changelog sync test; CI workflow without deploy | done v0.1.0: scaffold committed untouched, then PHP 8.4 pinned, Boost (Claude Code only), `core/` with dependency rules proven against a planted violation, release-consistency test, version meta tag, CI with Postgres (Postgres 18 since, matching production). CI has run on every push since the GitHub repository was created November 7, 2026. Local Postgres runs in Docker (`compose.yaml`). |
 | 1a | Domain core: `Book`, `BookId`, `Title`, `Author`, `Isbn` (validated ISBN-10 and ISBN-13), `CoverUrl`, `Status` (shelf or wanted), `Category`, `Depth` (0 to 5) | next |
 | 1b | Application layer: ports, in-memory doubles, shared repository suite; use cases to add, edit, and remove a book, move it between the wishlist and the shelf, categorize it, set its depth, manage categories, and list and filter the shelf and the wishlist | planned |
 | 1c | OpenAPI contract for Phase 1 resources (**review checkpoint with Ryan**) | planned |

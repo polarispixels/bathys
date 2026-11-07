@@ -40,7 +40,7 @@ The architecture is deliberately more structured than a typical Laravel app. Whe
 
 ## Status
 
-**v0.1.0, foundations.** The documents, the Laravel scaffold, and the architecture guards are in place; reading features start with the domain core. See [`docs/roadmap.md`](docs/roadmap.md).
+**v0.2.0 is live** at https://bathys.polarispixels.com: a coming-soon page, with public registration closed. Since then, merges to `main` deploy automatically once CI passes (listed under Unreleased in the [changelog](CHANGELOG.md)). Catalog features start with the domain core, Phase 1 step 1a. See [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Running it locally
 
@@ -55,7 +55,7 @@ composer test      # formatting, static analysis, and the full test suite
 
 ## Stack
 
-Laravel 13 (PHP 8.3+), Postgres, Inertia with React and TypeScript, Tailwind, passkey authentication, an MCP server for Claude, deployed on Laravel Forge. See [`docs/adr/`](docs/adr/README.md) for why.
+Laravel 13 (PHP 8.4), Postgres, Inertia with React and TypeScript, Tailwind, passkey authentication, an MCP server for Claude, deployed on Laravel Forge. See [`docs/adr/`](docs/adr/README.md) for why.
 
 ## How the Docs Are Organized
 
