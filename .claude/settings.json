@@ -1,9 +1,9 @@
 {
-  "permissions": {
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.backup)",
-      "Read(./.env.production)"
-    ]
-  }
+    "permissions": {
+        "deny": [
+            "Read(./.env)",
+            "Read(./.env.backup)",
+            "Read(./.env.production)"
+        ]
+    }
 }
