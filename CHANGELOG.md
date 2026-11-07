@@ -10,6 +10,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 - `llms.txt` summaries fall back to a document's first labeled line when it has no plain paragraph, so plan documents no longer get an empty description.
 
 ### Added
+- An idempotent `ShelfSeeder` that adds the first eight books through `AddBook`, run by a migration so production seeds itself on deploy.
 - Persistence for the shelf slice: the `books` table on Postgres, `BookRecord`, `BookMapper`, `EloquentBookRepository`, the system clock and UUID v7 adapters, the `CoreServiceProvider` composition root, and architecture rules that keep records out of controllers. The test suite now runs on Postgres.
 - TypeScript types for the API, generated from `contracts/openapi.yaml` into `resources/js/types/api.d.ts` (`npm run contract:types`); `composer ci:check` fails if the committed file is stale.
 - The shelf slice's ports (`BookRepository`, `Clock`, `IdGenerator`), in-memory test doubles, a shared repository test suite, and the `AddBook` and `ListShelf` use cases.

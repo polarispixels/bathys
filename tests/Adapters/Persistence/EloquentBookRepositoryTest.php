@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Adapters\Persistence;
 
+use App\Models\BookRecord;
 use Bathys\Domain\Book\Book;
 use Bathys\Domain\Book\BookId;
 use Bathys\Domain\Book\Title;
@@ -21,6 +22,17 @@ final class EloquentBookRepositoryTest extends TestCase
 {
     use BookRepositoryContract;
     use RefreshDatabase;
+
+    /**
+     * The seed migration puts the first shelf in the table, outside the test
+     * transaction. These tests need an empty repository, so clear it first.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        BookRecord::query()->delete();
+    }
 
     protected function makeRepository(): BookRepository
     {

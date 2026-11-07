@@ -107,6 +107,7 @@ Full routing, with reasons and costs: [`docs/ai-tooling.md`](docs/ai-tooling.md)
 ## Known traps
 
 - **The production server hosts other sites,** including polarispixels.com itself. SSH as `forge@` and confirm you are in `/home/forge/bathys.polarispixels.com/current` before any artisan command. The `polaris` SSH alias reaches this server; Bubbles is on a different one.
+- **`migrate --force` runs on every deploy and `DatabaseSeeder` may run on production.** Seeders hold real data only and are idempotent; local-only data never goes in `DatabaseSeeder`.
 - **Inertia props are a second serialization path.** They must go through the JSON:API resources ([ADR-0008](docs/adr/0008-web-ui-shares-the-api-contract.md)), or the contract quietly stops covering the web UI.
 - **Two `Book` classes would confuse everyone.** Eloquent models carry a `Record` suffix (`BookRecord`).
 - **`boost:install` run non-interactively records no agents,** and `boost:update` then refuses to run. `boost.json` must list `"agents": ["claude_code"]`. The installer also writes a Windows-side `wsl.exe` command into `.mcp.json`; ours runs `php artisan boost:mcp` from the project root.
