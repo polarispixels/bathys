@@ -5,6 +5,12 @@
          colors="true"
 >
     <testsuites>
+        <testsuite name="Core">
+            <directory>tests/Core</directory>
+        </testsuite>
+        <testsuite name="Architecture">
+            <directory>tests/Architecture</directory>
+        </testsuite>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
         </testsuite>
@@ -15,6 +21,7 @@
     <source>
         <include>
             <directory>app</directory>
+            <directory>core</directory>
         </include>
     </source>
     <php>
