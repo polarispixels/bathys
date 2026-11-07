@@ -68,6 +68,8 @@
         "ci:check": [
             "Composer\\Config::disableProcessTimeout",
             "npm run check",
+            "npm run contract:types",
+            "git diff --exit-code -- resources/js/types/api.d.ts",
             "npm run types:check",
             "@test"
         ],

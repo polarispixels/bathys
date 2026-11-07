@@ -44,6 +44,7 @@ composer ci:check       # what CI runs: frontend lint/format, TypeScript, then c
 composer lint           # fix PHP formatting (Pint)
 php artisan test --compact --testsuite=Core   # just the domain core, no framework boot
 npm run build           # production frontend build
+npm run contract:types   # regenerate resources/js/types/api.d.ts from contracts/openapi.yaml
 ```
 
 Test suites (`phpunit.xml`): `Core`, `Architecture`, `Unit`, `Feature`. PHP is pinned to 8.4 everywhere ([deployment](docs/deployment.md#php-version-one-number-everywhere)).

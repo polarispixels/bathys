@@ -6,66 +6,66 @@ openapi: 3.1.0
 # from this file with `npm run contract:types`; CI fails if that file is stale.
 
 info:
-  title: Bathys API
-  version: 0.1.0
-  description: >-
-    A personal book catalog: the shelf, the wishlist, categories, and one
-    rating per book (how deep it has been read, on Adler's levels).
-    Responses follow JSON:API (https://jsonapi.org).
+    title: Bathys API
+    version: 0.1.0
+    description: >-
+        A personal book catalog: the shelf, the wishlist, categories, and one
+        rating per book (how deep it has been read, on Adler's levels).
+        Responses follow JSON:API (https://jsonapi.org).
 
 servers:
-  - url: https://bathys.polarispixels.com/api
+    - url: https://bathys.polarispixels.com/api
 
 # No endpoints yet. The first one, GET /books, arrives with step 1e. Until
 # then the schemas below describe what the home page receives as Inertia props.
 paths: {}
 
 components:
-  schemas:
-    BookCollection:
-      description: A JSON:API document holding a list of books.
-      type: object
-      required: [data]
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/BookResource'
+    schemas:
+        BookCollection:
+            description: A JSON:API document holding a list of books.
+            type: object
+            required: [data]
+            properties:
+                data:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/BookResource'
 
-    BookResource:
-      description: A JSON:API resource object for one book.
-      type: object
-      required: [type, id, attributes]
-      properties:
-        type:
-          type: string
-          const: books
-        id:
-          type: string
-          format: uuid
-          description: Assigned by the app (UUID v7), never by the client.
-        attributes:
-          $ref: '#/components/schemas/BookAttributes'
+        BookResource:
+            description: A JSON:API resource object for one book.
+            type: object
+            required: [type, id, attributes]
+            properties:
+                type:
+                    type: string
+                    const: books
+                id:
+                    type: string
+                    format: uuid
+                    description: Assigned by the app (UUID v7), never by the client.
+                attributes:
+                    $ref: '#/components/schemas/BookAttributes'
 
-    BookAttributes:
-      type: object
-      required: [title, authors, status, addedAt]
-      properties:
-        title:
-          type: string
-          minLength: 1
-          description: As printed on the cover, without the subtitle. The only required field when adding a book.
-        authors:
-          type: array
-          description: Author names in cover order. May be empty.
-          items:
-            type: string
-            minLength: 1
-        status:
-          type: string
-          enum: [shelf, wanted]
-          description: On the shelf (owned) or wanted.
-        addedAt:
-          type: string
-          format: date-time
-          description: When the book entered the catalog, in UTC (RFC 3339).
+        BookAttributes:
+            type: object
+            required: [title, authors, status, addedAt]
+            properties:
+                title:
+                    type: string
+                    minLength: 1
+                    description: As printed on the cover, without the subtitle. The only required field when adding a book.
+                authors:
+                    type: array
+                    description: Author names in cover order. May be empty.
+                    items:
+                        type: string
+                        minLength: 1
+                status:
+                    type: string
+                    enum: [shelf, wanted]
+                    description: On the shelf (owned) or wanted.
+                addedAt:
+                    type: string
+                    format: date-time
+                    description: When the book entered the catalog, in UTC (RFC 3339).

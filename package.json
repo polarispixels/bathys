@@ -9,7 +9,8 @@
         "dev": "vp dev",
         "check": "vp check",
         "check:fix": "vp check --fix",
-        "types:check": "tsc --noEmit"
+        "types:check": "tsc --noEmit",
+        "contract:types": "openapi-typescript contracts/openapi.yaml -o resources/js/types/api.d.ts"
     },
     "dependencies": {
         "@inertiajs/react": "^3.0.0",
@@ -53,6 +54,7 @@
         "@rolldown/plugin-babel": "^0.2.3",
         "@types/node": "^22.13.5",
         "babel-plugin-react-compiler": "^1.0.0",
+        "openapi-typescript": "^7.13.0",
         "vite-plus": "1.4.0"
     },
     "optionalDependencies": {
