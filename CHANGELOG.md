@@ -7,6 +7,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 ## [Unreleased]
 
 ### Added
+- The documentation site at `/docs`: every repository document rendered as a public page with a sidebar, each also served as raw markdown at `/docs/<slug>.md`, styled with `@tailwindcss/typography`.
 - `App\Docs\MarkdownRenderer`, which renders documentation markdown with GitHub-style heading ids, stripped raw HTML, and relative links rewritten to site pages or GitHub.
 - `App\Docs\DocsCatalog`, the list of documentation pages for the `/docs` site, built by scanning the repository so a new document needs no registration.
 - Design, ADR-0011, and plan for the documentation site at `/docs`, rendered from the repository's markdown with a self-updating front page (`docs/designs/2026-11-07-docs-site-design.md`, `docs/plans/2026-11-07-docs-site.md`). Built first, before the domain core, as a quick win.
