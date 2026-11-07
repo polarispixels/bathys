@@ -6,23 +6,24 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
-### Security
-- `BookId` rejects a trailing newline; titles and authors reject control and bidirectional control characters; the home page is rate limited (60 a minute); `BookRecord` lists its fillable columns instead of allowing everything.
+## [0.5.0] - 2026-11-07
 
-### Changed
-- The seed migration writes the first shelf rows directly, so later schema changes cannot break fresh databases.
+The first useful page: `/` lists the books on the shelf, seeded with eight books, built as a thin slice through every layer the architecture describes. Ryan's call: a minimum viable product that later steps widen.
+
+### Added
+- **The shelf home page.** `/` shows the books on the shelf in title order, each with its authors, served by `ShelfController` through the `ListShelf` use case and `BookResource`, the same JSON:API shape the contract describes ([ADR-0008](docs/adr/0008-web-ui-shares-the-api-contract.md)). It replaces the coming-soon page and is public until sign-in exists (spec v0.6, Decisions Log 20).
+- **The first domain classes** in `core/`: `Book` with its `Title`, `Author`, `BookId`, and `Status`, plain PHP with framework-free tests, written as the domain core design specifies (Unicode whitespace, NFC normalization, UTC `addedAt`, control and bidirectional characters rejected).
+- **Ports and use cases:** `BookRepository`, `Clock`, and `IdGenerator`; `AddBook` and `ListShelf`; in-memory doubles in `tests/Doubles/` and a shared repository suite (`tests/Shared/`) that runs against both the in-memory double and Eloquent.
+- **Persistence on Postgres:** the `books` table, `BookRecord`, `BookMapper`, `EloquentBookRepository`, the system clock and UUID v7 adapters, and the `CoreServiceProvider` composition root. Two architecture rules keep `BookRecord` inside the persistence adapter and keep controllers on use cases; both were planted with a violation and seen to fail. The framework test suites now run on Postgres (`bathys_test` locally, the CI service in CI).
+- **Seeding that needs nobody:** an idempotent `ShelfSeeder` adds the eight books through `AddBook` for `db:seed`, and a data migration inserts the same rows on deploy, so production seeds itself. The starter kit's test user is no longer created by `db:seed`.
+- **Contract types:** `resources/js/types/api.d.ts` is generated from `contracts/openapi.yaml` (`npm run contract:types`) and `composer ci:check` fails if the committed file is stale.
+- The home page is rate limited (60 requests a minute per address).
 
 ### Fixed
 - `llms.txt` summaries fall back to a document's first labeled line when it has no plain paragraph, so plan documents no longer get an empty description.
 
-### Added
-- The home page lists the shelf, served through `ListShelf` and `BookResource`, the same JSON:API shape the contract describes.
-- An idempotent `ShelfSeeder` that adds the first eight books through `AddBook`, run by a migration so production seeds itself on deploy.
-- Persistence for the shelf slice: the `books` table on Postgres, `BookRecord`, `BookMapper`, `EloquentBookRepository`, the system clock and UUID v7 adapters, the `CoreServiceProvider` composition root, and architecture rules that keep records out of controllers. The test suite now runs on Postgres.
-- TypeScript types for the API, generated from `contracts/openapi.yaml` into `resources/js/types/api.d.ts` (`npm run contract:types`); `composer ci:check` fails if the committed file is stale.
-- The shelf slice's ports (`BookRepository`, `Clock`, `IdGenerator`), in-memory test doubles, a shared repository test suite, and the `AddBook` and `ListShelf` use cases.
-- The first domain classes: `Book` with its `Title`, `Author`, `BookId`, and `Status`, plain PHP in `core/` with framework-free tests.
-- Design, plan, and the first version of `contracts/openapi.yaml` (the JSON:API `books` resource schemas) for the shelf slice, a walking skeleton through every layer that replaces the coming-soon page with the shelf. Ryan's reorder: the slice comes before steps 1a to 1f, and the roadmap says which parts of each it delivers early.
+### Changed
+- `README.md` describes what is live; `docs/development.md` records the Postgres test setup and the `Adapters` suite; CLAUDE.md gains the `contract:types` command and the seeding trap.
 
 ## [0.4.0] - 2026-11-07
 

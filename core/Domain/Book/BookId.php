@@ -9,7 +9,9 @@ use Bathys\Domain\InvalidId;
 /**
  * The identity of a book. A book is the same book even if its title changes,
  * so it needs an id of its own. A class keeps a book id from being mixed up
- * with any other string. It checks the shape only (anchored with \A and \z, because $ would also match before a trailing newline) (a UUID); it does not make ids.
+ * with any other string. It checks only the shape of a UUID; it does not make
+ * ids. The pattern is anchored with \A and \z because $ would also match before
+ * a trailing newline.
  */
 final readonly class BookId
 {
