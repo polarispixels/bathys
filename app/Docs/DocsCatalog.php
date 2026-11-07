@@ -49,9 +49,16 @@ final class DocsCatalog
         }
 
         if (is_dir($this->repoRoot.'/docs')) {
+            $docsDir = realpath($this->repoRoot.'/docs');
             $files = Finder::create()->files()->in($this->repoRoot.'/docs')->name('*.md')->sortByName();
 
             foreach ($files as $file) {
+                // Never serve a symlink, or anything that resolves outside docs/.
+                $real = $file->getRealPath();
+                if ($file->isLink() || $docsDir === false || $real === false || ! str_starts_with($real, $docsDir.DIRECTORY_SEPARATOR)) {
+                    continue;
+                }
+
                 $relative = 'docs/'.str_replace('\\', '/', $file->getRelativePathname());
 
                 if ($relative !== self::FRONT_PATH) {

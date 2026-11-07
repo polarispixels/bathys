@@ -50,3 +50,12 @@ it('renders inline markdown without a paragraph wrapper', function () {
     expect($this->renderer->renderInline('Domain core: `Book` and [spec](spec.md)'))
         ->toBe('Domain core: <code>Book</code> and <a href="/docs/spec">spec</a>');
 });
+
+it('sends a link to a deleted ADR to GitHub, or keeps only its text when there is no repository URL', function () {
+    $html = $this->renderer->render($this->catalog->find('spec'));
+    expect($html)->toContain('href="https://github.com/polarispixels/bathys/blob/main/docs/adr/0099-deleted.md"')
+        ->not->toContain('/docs/adr/0099-deleted"');
+
+    $plain = (new MarkdownRenderer($this->catalog, null))->render($this->catalog->find('spec'));
+    expect($plain)->toContain('gone')->not->toContain('0099');
+});

@@ -41,10 +41,13 @@
                         {{-- Safe to print unescaped: renderInline strips raw HTML from the source. --}}
                         <td>{!! $renderer->renderInline($row->item) !!}</td>
                         <td>
+                            {{-- Safe to print unescaped: renderInline strips raw HTML from the source. --}}
                             @if ($row->badge)
-                                <span class="badge badge-{{ $row->badge }}">{{ $row->status }}</span>
+                                @php([$word, $rest] = array_pad(preg_split('/\s+/', trim($row->status), 2) ?: [], 2, ''))
+                                <span class="badge badge-{{ $row->badge }}">{{ $word }}</span>
+                                {!! $renderer->renderInline($rest) !!}
                             @else
-                                {{ $row->status }}
+                                {!! $renderer->renderInline($row->status) !!}
                             @endif
                         </td>
                     </tr>

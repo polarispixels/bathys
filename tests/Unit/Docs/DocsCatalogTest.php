@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Docs\DocsCatalog;
 
 beforeEach(fn () => $this->catalog = new DocsCatalog(dirname(__DIR__, 2).'/Fixtures/docs-site'));
@@ -39,4 +41,24 @@ it('resolves repository paths to slugs', function () {
     expect($this->catalog->relativePathToSlug('README.md'))->toBe('readme');
     expect($this->catalog->relativePathToSlug('docs/index.md'))->toBe('');
     expect($this->catalog->relativePathToSlug('contracts/openapi.yaml'))->toBeNull();
+});
+
+it('never serves a symlinked file, even one that points outside docs', function () {
+    $root = sys_get_temp_dir().'/docs-symlink-'.bin2hex(random_bytes(4));
+    mkdir($root.'/docs', 0777, true);
+    file_put_contents($root.'/docs/real.md', "# Real\n");
+    file_put_contents($root.'/outside.md', "# Secret\n");
+    symlink('../outside.md', $root.'/docs/evil.md');
+
+    try {
+        $catalog = new DocsCatalog($root);
+        expect($catalog->find('real'))->not->toBeNull();
+        expect($catalog->find('evil'))->toBeNull();
+    } finally {
+        @unlink($root.'/docs/evil.md');
+        @unlink($root.'/docs/real.md');
+        @unlink($root.'/outside.md');
+        @rmdir($root.'/docs');
+        @rmdir($root);
+    }
 });

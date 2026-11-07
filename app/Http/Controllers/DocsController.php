@@ -9,7 +9,6 @@ use App\Docs\DocsCatalog;
 use App\Docs\MarkdownRenderer;
 use App\Docs\ReleaseNotes;
 use App\Docs\RoadmapBoard;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
 
 /**
@@ -30,7 +29,7 @@ final class DocsController
         $this->renderer = new MarkdownRenderer($this->catalog, is_string($repositoryUrl) ? $repositoryUrl : null);
     }
 
-    public function index(): View
+    public function index(): Response
     {
         $release = ReleaseNotes::latest(
             (string) file_get_contents(base_path('CHANGELOG.md')),
@@ -45,7 +44,7 @@ final class DocsController
         ]);
     }
 
-    public function show(string $slug): View
+    public function show(string $slug): Response
     {
         return $this->page($this->find($slug), 'docs.show');
     }
@@ -96,7 +95,7 @@ final class DocsController
             }
         }
 
-        return response(implode("\n", $lines)."\n", 200, ['Content-Type' => 'text/plain; charset=utf-8']);
+        return $this->cacheable(response(implode("\n", $lines)."\n", 200, ['Content-Type' => 'text/plain; charset=utf-8']));
     }
 
     /** Cut at the last space within the limit, dropping trailing punctuation. */
@@ -122,19 +121,25 @@ final class DocsController
      * @param  view-string  $view
      * @param  array<string, mixed>  $extra
      */
-    private function page(DocPage $page, string $view, array $extra = []): View
+    private function page(DocPage $page, string $view, array $extra = []): Response
     {
-        return view($view, $extra + [
+        return $this->cacheable(response()->view($view, $extra + [
             'catalog' => $this->catalog,
             'page' => $page,
             'html' => $this->renderer->render($page),
-        ]);
+        ]));
     }
 
     private function markdownResponse(DocPage $page): Response
     {
-        return response((string) file_get_contents($page->path), 200, [
+        return $this->cacheable(response((string) file_get_contents($page->path), 200, [
             'Content-Type' => 'text/markdown; charset=utf-8',
-        ]);
+        ]));
+    }
+
+    /** The one place the public cache header is set: the docs only change on deploy. */
+    private function cacheable(Response $response): Response
+    {
+        return $response->header('Cache-Control', 'public, max-age=300');
     }
 }

@@ -68,3 +68,21 @@ it('publishes llms.txt with a markdown link for every page', function () {
         }
     }
 });
+
+it('renders front page status cells without raw markdown and with badges', function () {
+    $this->get('/docs')->assertOk()
+        ->assertDontSee('](designs/', escape: false)
+        ->assertSee('badge-done', escape: false);
+});
+
+it('links the header back to the docs front page', function () {
+    $this->get('/docs/spec')->assertOk()->assertSee('href="/docs"', escape: false);
+});
+
+it('sends no cookies from docs routes and marks them cacheable', function () {
+    $this->get('/docs')->assertOk()->assertHeaderMissing('Set-Cookie');
+    $this->get('/llms.txt')->assertOk()->assertHeaderMissing('Set-Cookie');
+
+    $cache = (string) $this->get('/docs/spec')->assertOk()->headers->get('Cache-Control');
+    expect($cache)->toContain('max-age=300')->toContain('public');
+});

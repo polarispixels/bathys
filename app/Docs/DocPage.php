@@ -21,7 +21,10 @@ final readonly class DocPage
      * The first paragraph after the "# " heading, on one line, markdown left as is.
      *
      * Blocks that start with a heading, table, list, blockquote, rule, or code
-     * fence are skipped. Empty when the document has no such paragraph.
+     * fence are skipped. So is a block that opens with a bold label such as
+     * "**Status:** Accepted": specs, ADRs, and designs begin with those metadata
+     * lines, and they are not a summary. Markdown links become their plain text.
+     * Empty when the document has no such paragraph.
      */
     public function firstParagraph(): string
     {
@@ -55,7 +58,7 @@ final readonly class DocPage
             }
 
             if ($block !== [] && preg_match('/^(#|\||>|[-*+]\s|\*\*[^*]+:\*\*|\d+[.)]\s|---|\*\*\*)/', $block[0]) !== 1) {
-                return implode(' ', $block);
+                return (string) preg_replace('/\[([^\]]*)\]\([^)]*\)/', '$1', implode(' ', $block));
             }
             $block = [];
         }

@@ -35,8 +35,10 @@
     <body class="min-h-screen bg-white font-sans text-neutral-900 antialiased dark:bg-neutral-950 dark:text-neutral-100">
         <header class="border-b border-neutral-200 dark:border-neutral-800">
             <div class="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
-                <img src="/icon.svg" alt="" class="h-6 w-6">
-                <span class="font-semibold">Bathys</span>
+                <a href="/docs" class="flex items-center gap-3 no-underline">
+                    <img src="/icon.svg" alt="" class="h-6 w-6">
+                    <span class="font-semibold">Bathys</span>
+                </a>
                 <a href="/" class="ml-auto text-sm underline">Back to the app</a>
             </div>
         </header>
