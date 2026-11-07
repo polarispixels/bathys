@@ -2,7 +2,7 @@
 
 **Document Type:** Project Spec
 **Status:** DRAFT (re-scoped to a catalog; ready for design and implementation planning)
-**Version:** 0.5
+**Version:** 0.6
 **Last Updated:** November 7, 2026
 **Owner:** Ryan Grissinger
 **Related:** [Architecture Decision Records](adr/README.md)
@@ -216,7 +216,7 @@ Not scheduled. Recorded so they aren't re-proposed as new. Each would need Ryan'
 
 ## Decisions Log
 
-Questions 1 to 8 come from v0.1, 9 to 12 from review of v0.2, 13 to 16 from the re-scope, and 17 to 19 from the domain core design (step 1a). All were answered on November 7, 2026. Rows marked *superseded* record what was decided at the time; the row named in the decision replaces them.
+Questions 1 to 8 come from v0.1, 9 to 12 from review of v0.2, 13 to 16 from the re-scope, 17 to 19 from the domain core design (step 1a), and 20 from the shelf slice. All were answered on November 7, 2026. Rows marked *superseded* record what was decided at the time; the row named in the decision replaces them.
 
 | # | Question | Decision |
 |---|---|---|
@@ -239,6 +239,7 @@ Questions 1 to 8 come from v0.1, 9 to 12 from review of v0.2, 13 to 16 from the 
 | 17 | What happens to a book that leaves the shelf (lent, given away, sold)? | **Remove it, or move it back to Wanted.** It's rare for Ryan. A separate "no longer owned" status is in [Later](#later). |
 | 18 | Are "Fiction", "fiction", and " Fiction " the same category? | **Yes.** Category names match ignoring case and surrounding spaces, and keep the capitalization first typed. |
 | 19 | Are authors their own records? | **No, names on the book, in cover order.** Browsing everything by one author is a filter on the name. Author records are in [Later](#later). |
+| 20 | Is the home screen public? | **Yes, until sign-in exists** (step 1e). The shelf at `/` is readable by anyone; adding and editing wait for sign-in. |
 
 ## Open Questions
 
@@ -253,6 +254,9 @@ Phase 1, step 1a: the domain core (Book, Status, Category, Depth, and their valu
 ---
 
 ## Version History
+
+**v0.6 (November 7, 2026)**
+- Decision 20: the shelf at `/` is public until sign-in exists (step 1e).
 
 **v0.5 (November 7, 2026)**
 - Decisions 17 to 19 from the domain core design ([`designs/2026-11-07-domain-core-design.md`](designs/2026-11-07-domain-core-design.md)): a book that leaves the shelf is removed or moved back to Wanted; category names match ignoring case and surrounding spaces; authors are names on the book. The Book section states all three. Later gains a "no longer owned" status and author records.

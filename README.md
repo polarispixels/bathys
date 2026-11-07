@@ -40,7 +40,7 @@ The architecture is deliberately more structured than a typical Laravel app. Whe
 
 ## Status
 
-**v0.3.0 is live** at https://bathys.polarispixels.com: a coming-soon page showing the icon and the version, with public registration closed. Merges to `main` deploy automatically once CI passes. Catalog features start with the domain core, Phase 1 step 1a. See [`docs/roadmap.md`](docs/roadmap.md).
+**v0.3.0 is live** at https://bathys.polarispixels.com: a coming-soon page showing the icon and the version, with public registration closed. On the unreleased branch the home page lists the shelf, seeded with eight books. Merges to `main` deploy automatically once CI passes. Catalog features start with the domain core, Phase 1 step 1a. See [`docs/roadmap.md`](docs/roadmap.md).
 
 Docs: https://bathys.polarispixels.com/docs, rendered from this repository's `docs/` folder.
 
