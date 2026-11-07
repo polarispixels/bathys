@@ -6,24 +6,22 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-07
+
+The documentation site, and the repository made public. Read it at https://bathys.polarispixels.com/docs.
+
 ### Added
-- `/llms.txt`, a plain-text map of the documentation for language models, and pointers to the docs site in the README, CLAUDE.md, and the development guide.
-- A self-updating "Where things stand" block on the docs front page, built from the changelog and the roadmap tables on every request.
-- The documentation site at `/docs`: every repository document rendered as a public page with a sidebar, each also served as raw markdown at `/docs/<slug>.md`, styled with `@tailwindcss/typography`.
-- `App\Docs\MarkdownRenderer`, which renders documentation markdown with GitHub-style heading ids, stripped raw HTML, and relative links rewritten to site pages or GitHub.
-- `App\Docs\DocsCatalog`, the list of documentation pages for the `/docs` site, built by scanning the repository so a new document needs no registration.
-- Design, ADR-0011, and plan for the documentation site at `/docs`, rendered from the repository's markdown with a self-updating front page (`docs/designs/2026-11-07-docs-site-design.md`, `docs/plans/2026-11-07-docs-site.md`). Built first, before the domain core, as a quick win.
-- Design for the domain core, Phase 1 step 1a (`docs/designs/2026-11-07-domain-core-design.md`): the book, its value objects, status, depth, and categories as plain PHP. Spec v0.5 records the three decisions it raised (Decisions Log 17 to 19).
-- `composer.json` declares `ext-intl` and `ext-mbstring`, which the domain core's Unicode normalization needs.
-
-### Security
-- Docs routes run without sessions or CSRF, are rate limited, and send a public five-minute cache header; symlinked files under `docs/` are never served.
-
-### Fixed
-- The docs front page renders status cells as inline markdown (a badge for the first word, then the rest), and the docs header links back to the front page.
+- **The documentation site at `/docs`** ([ADR-0011](docs/adr/0011-docs-site-rendered-from-the-repository.md)): every repository document (`docs/**`, the README, the changelog, `core/README.md`) rendered as a public page with a sidebar, each also served as raw markdown at `/docs/<slug>.md`, and `/llms.txt` as a plain-text map for language models. Relative links between documents are rewritten to site pages, or to GitHub for files outside the set. Styled with `@tailwindcss/typography`.
+- **A self-updating "Where things stand" block** on the docs front page: the live version and release date, the latest changelog paragraph, and the roadmap's status tables, read from the repository on every request. The front page's orientation text is `docs/index.md`.
+- Docs routes run without sessions or CSRF, are rate limited, and send a public five-minute cache header. Slugs are only ever keys into a catalog built by scanning the repository; symlinked files under `docs/` are never served.
+- Design for the domain core, Phase 1 step 1a (`docs/designs/2026-11-07-domain-core-design.md`): the book, its value objects, status, depth, and categories as plain PHP, with a Claude Desktop review applied (NFC normalization and Unicode whitespace for every text value, `https`-only cover URLs, `addedAt` in UTC, `Depth::tryFrom()` at the edges). Spec v0.5 records the three decisions it raised (Decisions Log 17 to 19).
+- `composer.json` declares `ext-intl`, `ext-mbstring`, and `league/commonmark`.
 
 ### Changed
-- The domain core design applies a Claude Desktop review: NFC normalization and Unicode whitespace for every text value, `https`-only cover URLs, `addedAt` in UTC, and `Depth::tryFrom()` at the edges.
+- **The GitHub repository is public** (Ryan's decision, November 7, 2026), so the docs site can link to it. The history was scanned for secrets first; none were found.
+- The deployment doc no longer claims the Forge API token cannot run commands (a token that can manage deploys can replace the deploy script), and no longer names the token file's path or expiry. The environment inventory gains `APP_URL` and `DOCS_REPOSITORY_URL`.
+- The release checklist in CLAUDE.md and the pipeline diagram in the deployment doc name the real script, `npm run types:check` (there is no `typecheck` script).
+- Roadmap: the docs site was built first, before the domain core, as a quick win; step 1a is designed and next.
 
 ## [0.3.0] - 2026-11-07
 

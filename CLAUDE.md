@@ -84,7 +84,7 @@ Kept here, not in a skill, because it must run on every release. Details: [Versi
 1. Bump the version in `package.json` (SemVer; pre-1.0 rules in the development doc).
 2. Add a `## [X.Y.Z] - YYYY-MM-DD` entry to `CHANGELOG.md`, moving items out of `[Unreleased]`.
 3. Update `docs/roadmap.md` status, and any doc whose truth changed (spec, ADR status, this file).
-4. `composer lint && composer test && npm run typecheck && npm run build` must all pass.
+4. `composer lint && composer test && npm run types:check && npm run build` must all pass.
 5. Commit `chore(release): vX.Y.Z`, tag `vX.Y.Z`, push with tags. CI deploys; confirm the live version.
 
 ## Agents and models

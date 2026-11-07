@@ -32,7 +32,7 @@ There is no staging environment. For a single-user app, CI plus a quick rollback
 push to main ──► GitHub Actions
                    ├─ composer lint        (Pint, Larastan)
                    ├─ composer test        (Pest: core, adapters on Postgres, feature, contract, architecture)
-                   ├─ npm run typecheck
+                   ├─ npm run types:check
                    ├─ npm run build
                    └─ all green? ──► call the Forge deploy hook ──► Forge runs the deploy script
 ```
