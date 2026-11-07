@@ -80,9 +80,9 @@ The script lives in the repository at [`deploy/forge-deploy.sh`](../deploy/forge
 
 Not set up yet; tracked in [#9](https://github.com/polarispixels/bathys/issues/9).
 
-- **Queue worker:** needed from shelf-photo import onward (AI vision runs as a queued job). Same PHP version as the site.
+- **Queue worker:** not needed in Phase 1, which has no queued jobs. It returns with the first one (for example, shelf-photo import, now [Later](spec.md#later)). Same PHP version as the site.
 - **Scheduler cron:** `artisan schedule:run` every minute. Same PHP version.
-- **Failure alerts:** a failed queued job or a stuck queue must notify Ryan. indigo-nebula learned this after queued mail failed silently. *Confirm the channel (email or Slack) at step 23.*
+- **Failure alerts:** a failed queued job or a stuck queue must notify Ryan. indigo-nebula learned this after queued mail failed silently. Choose the channel (email or Slack) when the first queued job arrives.
 
 ### Forge API token
 
@@ -131,7 +131,7 @@ Every variable is listed, with a comment and without a real value, in `.env.exam
 |---|---|---|---|
 | `APP_KEY` | Yes | `.env` / generated per run / Forge environment | Encrypts sessions and cookies; rotating it signs Ryan out |
 | `DB_*` | Password is | `.env` / CI service defaults / Forge | |
-| AI provider key (shelf photos, review summaries) | Yes | `.env` / never (tests fake it) / Forge | Name set by the Laravel AI SDK; *confirm at step 23* |
+| AI provider key | Yes | `.env` / never (tests fake it) / Forge | Not used in version 1; needed only if shelf-photo import or review summaries return from [Later](spec.md#later) |
 | Metadata source (Open Library) | No key | | If Google Books is added later, its key is a secret |
 | MCP access tokens | Yes | Generated in the app, stored hashed | Phase 2 |
 | `FORGE_DEPLOY_HOOK` | Yes | Never local / GitHub Actions secret / Forge | Anyone holding it can trigger a deploy |

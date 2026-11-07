@@ -16,7 +16,7 @@ How it relates to the other docs: [`development.md`](development.md) says how a 
 4. **The stack lives in the repository.** Plugins are enabled at project scope in `.claude/settings.json` and subagents are defined in `.claude/agents/`, both committed. A fresh clone gets the same setup, and a reader can see it.
 5. **Every tool earns its context.** Each enabled plugin adds tokens to every turn. `claude plugin details <name>` shows the always-on cost, and the **Installed** tab in `/plugin` groups plugins under **Not used recently**. The monthly plugin review ([development](development.md#skills-and-plugins)) disables what hasn't been used.
 6. **Add a tool when its phase arrives.** Each row below names the roadmap step it starts at. Installing everything on day one pays the context cost for months before the tool is useful.
-7. **A tool choice with ongoing cost or lock-in is an architectural decision.** It gets an ADR before it is adopted (a monitoring service, an AI vision provider).
+7. **A tool choice with ongoing cost or lock-in is an architectural decision.** It gets an ADR before it is adopted (a monitoring service, a paid metadata source).
 8. **Production stays out of reach.** Routine deploys go through CI only ([deployment](deployment.md#the-pipeline)). The one exception is setup and operations through the narrowly scoped Forge API token ([deployment](deployment.md#forge-api-token)), which can't delete sites, add SSH keys, or run commands. No MCP server gets write access to the production server, which hosts other sites.
 
 ---
@@ -71,6 +71,8 @@ effort: medium
 | `security-reviewer` | opus | high | Read, Grep, Glob, Bash |
 | `scout` | haiku | low | Read, Grep, Glob, Bash |
 
+Verified November 7, 2026 against the [subagent documentation](https://code.claude.com/docs/en/sub-agents): `model` takes `sonnet`, `opus`, `haiku`, `fable`, a full model ID, or `inherit`; `effort` takes `low` through `max`; `tools` is a comma-separated list or a YAML list. Unrecognized fields are ignored without an error, so check new ones with `claude plugin validate .claude/agents`. In current Claude Code, `/agents` no longer lists subagents; `/tasks` shows the model a running subagent uses.
+
 Two traps:
 
 - **Model resolution takes the first match:** the model passed when a subagent is spawned, then the definition's `model`, then the `CLAUDE_CODE_SUBAGENT_MODEL` environment variable, then the parent's model.
@@ -107,10 +109,10 @@ Enabled at project scope from the start, because every phase uses them.
 | Database efficiency | 1d | `Model::preventLazyLoading()` outside production; Boost `database-query`; Postgres MCP Pro locally, once real queries exist | Opus, high, for query analysis | Postgres MCP Pro gives EXPLAIN plans and index advice but needs the `pg_stat_statements` and `hypopg` extensions, and its upstream development has slowed. Local database only, restricted mode. |
 | Endpoints and authentication | 1e | superpowers lifecycle; Boost `fortify-development` skill | Sonnet, medium; `security-reviewer` on every auth change | Passkeys, single user, no registration |
 | Security | 1e | `security-guidance` plugin, plus the built-in `/security-review` before merging anything that touches auth, secrets, or external input | Opus, high | `security-guidance` warns on risky patterns while Claude edits and reviews the diff when a session stops. That review costs tokens every session, so it starts when auth arrives. |
-| Frontend design | 1f | `frontend-design` plugin | Fable sets direction; Sonnet builds | The session screen is mobile-first ([spec](spec.md#where-it-is-used)) |
+| Frontend design | 1f | `frontend-design` plugin | Fable sets direction; Sonnet builds | Adding a book and browsing are mobile-first ([spec](spec.md#where-it-is-used)) |
 | Frontend build | 1f | Boost `inertia-react-development`, `tailwindcss-development`, `wayfinder-development` skills; `typescript-lsp` plugin | Sonnet, medium | Inertia props go through the JSON:API resources ([ADR-0008](adr/0008-web-ui-shares-the-api-contract.md)) |
-| Browser verification | 1f | `playwright` plugin; Boost `browser-logs` | Sonnet or Haiku | Check the session screen at phone width, in dim mode |
-| External services | 1g | Ports plus recorded fixtures ([testing rules](development.md#testing)); Anthropic's Claude API skill when writing the vision adapter | Fable designs the port; Sonnet builds the adapter | Which model and provider read book spines is an ADR at 1g |
+| Browser verification | 1f | `playwright` plugin; Boost `browser-logs` | Sonnet or Haiku | Check the add-a-book and browse screens at phone width, including the barcode scanner |
+| External services | 1g | A `MetadataLookup` port with an Open Library adapter, tested against recorded fixtures ([testing rules](development.md#testing)) | Fable designs the port; Sonnet builds the adapter | Barcode scanning runs in the browser; only the ISBN reaches the server |
 | MCP server | Phase 2 | `mcp-server-dev` plugin; the `laravel/mcp` package Boost already depends on | Fable designs; Sonnet builds | Test with MCP Inspector over both transports ([ADR-0009](adr/0009-mcp-server-inside-laravel.md)) |
 | Code review | every branch | `superpowers:requesting-code-review`, dispatched to `reviewer` | Opus, high | Not also the official `code-review` plugin (principle 1) |
 | Debugging | as needed | `superpowers:systematic-debugging` | Fable, high or xhigh | A flaky test is a nondeterminism bug ([testing](development.md#testing)) |
@@ -174,7 +176,7 @@ Later, when their step arrives: `security-guidance` (1e), `typescript-lsp`, `fro
 - **Quarterly review** of this document ([#13](https://github.com/polarispixels/bathys/issues/13)), next in February 2027.
 - **OpenAPI linter:** choose at step 1c.
 - **Monitoring service:** ADR at step 1e.
-- **Vision provider and model for shelf-photo import:** ADR at step 1g.
+- **Vision provider for shelf-photo import:** deferred with the feature ([spec, Later](spec.md#later)). If it returns, choose the provider in an ADR before any code, using Anthropic's Claude API skill for the adapter.
 
 ---
 

@@ -12,36 +12,34 @@ Phase scope comes from [the spec's phasing](spec.md#suggested-phasing). Steps co
 
 | Item | Status |
 |---|---|
-| Product spec (v0.3), ADR-0001 to ADR-0009, README | done (docs only) |
+| Product spec (now v0.4), ADR-0001 to ADR-0010, README | done (docs only) |
 | Development method, deployment and secrets, CLAUDE.md, roadmap, changelog | done (docs only) |
+| Production at https://bathys.polarispixels.com (Forge, zero-downtime, Let's Encrypt) and the CI deploy job | done: live since v0.2.0 (the coming-soon page); the CI deploy job and the Forge setup are under Unreleased in the changelog |
+| Issue tracking (milestones, issue forms, triage) and AI tooling (`docs/ai-tooling.md`, four subagents, project plugins) | done (under Unreleased) |
 
-## Phase 1: Shelf and ladder
+## Phase 1: Catalog
 
 | Step | Item | Status |
 |---|---|---|
-| 0 | Scaffold Laravel 13 (React starter kit, Pest, Postgres, Boost, Pint, Larastan); `core/` autoload; architecture tests; version/changelog sync test; CI workflow without deploy | done v0.1.0: scaffold committed untouched, then PHP 8.4 pinned, Boost (Claude Code only), `core/` with dependency rules proven against a planted violation, release-consistency test, version meta tag, CI with Postgres. CI first runs once the GitHub repository exists. Local Postgres not yet installed (not needed until 1d). |
-| 1a | Domain core: `DepthLevel`, value objects, `Format`/`Copy`, `Book`, `Pass` and depth as high-water mark, `Checklist`, `ReadingSession`, `Capture`/`Verdict`, `NextUpPicker`, facets | next |
-| 1b | Application layer: ports, in-memory doubles, shared repository suite, use cases (`AddBook`, `RecordPass`, `EditPass`, `DeletePass`, `StartSession`, `CompleteSession`, `ResumeSession`, `ListNextUp` …) | planned |
+| 0 | Scaffold Laravel 13 (React starter kit, Pest, Postgres, Boost, Pint, Larastan); `core/` autoload; architecture tests; version/changelog sync test; CI workflow without deploy | done v0.1.0: scaffold committed untouched, then PHP 8.4 pinned, Boost (Claude Code only), `core/` with dependency rules proven against a planted violation, release-consistency test, version meta tag, CI with Postgres (Postgres 18 since, matching production). CI has run on every push since the GitHub repository was created November 7, 2026. Local Postgres runs in Docker (`compose.yaml`). |
+| 1a | Domain core: `Book`, `BookId`, `Title`, `Author`, `Isbn` (validated ISBN-10 and ISBN-13), `CoverUrl`, `Status` (shelf or wanted), `Category`, `Depth` (0 to 5) | next |
+| 1b | Application layer: ports, in-memory doubles, shared repository suite; use cases to add, edit, and remove a book, move it between the wishlist and the shelf, categorize it, set its depth, manage categories, and list and filter the shelf and the wishlist | planned |
 | 1c | OpenAPI contract for Phase 1 resources (**review checkpoint with Ryan**) | planned |
 | 1d | Persistence: migrations, `*Record` models, mappers, Eloquent repositories, composition root | planned |
-| 1e | JSON:API endpoints, contract tests, passkey auth, **first Forge deploy** (step 17) | planned |
-| 1f | Web UI: generated TS types, mobile-first session screen with focus aids, quick "I read this" form, shelf screen, next-up list | planned |
-| 1g | Faster ways in: Open Library title search and ISBN lookup, barcode scan, **shelf-photo import** (step 23) | planned |
+| 1e | JSON:API endpoints, contract tests, passkey sign-in for the one user | planned |
+| 1f | Web UI: generated TypeScript types; mobile-first add-a-book and browse screens for the shelf and the wishlist; category management | planned |
+| 1g | Faster ways in: Open Library title search and ISBN lookup (a `MetadataLookup` port), barcode scan in the browser | planned |
 | | **1.0.0:** Phase 1 complete and in daily use | |
 
-**Open follow-ups** for this phase are GitHub issues in the [Phase 1 milestone](https://github.com/polarispixels/bathys/milestone/1): backups (#6), the user account and passkey (#7), passkey recovery (#8), the queue worker and alerts (#9), the version in the footer (#10), and Forge token renewal (#11).
+**Open follow-ups** for this phase are GitHub issues in the [Phase 1 milestone](https://github.com/polarispixels/bathys/milestone/1): backups (#6), the user account and passkey (#7), passkey recovery (#8), the version in the footer (#10), Forge token renewal (#11), the quarterly AI tooling review (#13), and confirming subagent dispatch (#14).
 
-## Phase 2: MCP and research
+## Phase 2: MCP
 
-MCP server inside the app ([ADR-0009](adr/0009-mcp-server-inside-laravel.md)), add by conversation, review summaries.
-
-## Phase 3: Relationships and discovery
-
-Questions, book-to-book links, syntopical suggestions, related-book discovery, purchase and borrow links.
+An MCP server inside the app ([ADR-0009](adr/0009-mcp-server-inside-laravel.md)), so Claude can add and update books by conversation.
 
 ## Later (not scheduled)
 
-From the spec: Kindle highlight import; StoryBank and COMPASS integrations; mapping questions to work topics; a public recommended-reading page; a native phone app.
+Everything deferred by the November 7, 2026 re-scope, and older "later" ideas, is listed in [the spec's Later section](spec.md#later): the reading-tool features (passes, sessions, checklists, focus aids, captures, the next-up picker), facets beyond category, relationships and syntopical work, review summaries, discovery, purchase links, shelf-photo import, Kindle highlights, integrations, a public page, and a native app. Their GitHub issues live in the [Later milestone](https://github.com/polarispixels/bathys/milestone/3), for example the queue worker (#9).
 
 ## Open questions
 

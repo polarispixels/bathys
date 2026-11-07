@@ -13,7 +13,7 @@ Read first: `CLAUDE.md` and `docs/deployment.md` (Secrets and configuration).
 Check:
 - **Authentication and authorization:** every non-public route requires the signed-in user; registration stays off (tests assert `/register` returns 404); passkey flows follow Fortify's defaults.
 - **Secrets:** no secret values in code, tests, fixtures, logs, commits, or workflow files; secrets are referenced by environment variable name.
-- **External input:** validation at every boundary (HTTP, MCP tools, uploaded shelf photos, metadata from Open Library or AI responses); no mass assignment; no raw SQL built from input.
+- **External input:** validation at every boundary (HTTP, MCP tools, barcode and search input, metadata from Open Library); no mass assignment; no raw SQL built from input.
 - **Outbound calls:** host allowlists where a URL comes from input; no stray HTTP in tests.
 - **Deploy pipeline:** `.github/workflows/` uses secrets only through `secrets.*`, and pinned action SHAs stay pinned.
 

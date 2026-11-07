@@ -1,31 +1,33 @@
 # Bathys
 
-*Bathys* (Greek *βαθύς*, "deep") is a private reading tool that measures **how deep you have gone into a book** instead of how many books you have finished.
-
-Most reading trackers count finished books. For a reader whose attention wanders, who falls asleep twenty pages in, and who rarely reads cover to cover, that metric turns almost all of their reading into failure. Bathys measures something else.
+*Bathys* (Greek *βαθύς*, "deep") is a private catalog of the books on one person's shelf and the books they want, grouped into their own categories, with one rating per book: **how deep they have read it**.
 
 ## The Idea
 
-Mortimer Adler's *How to Read a Book* describes levels of reading, each deeper than the last. Bathys turns them into a ladder:
+Three things, in one place:
+
+- **The shelf:** every book owned.
+- **The wishlist:** every book wanted, ready to move to the shelf when it arrives.
+- **Categories:** an editable list, so the catalog is organized the way its owner thinks.
+
+Each book's one rating is its **depth**, on the levels of reading from Mortimer Adler's *How to Read a Book*:
 
 | Level | Name | In practice |
 |---|---|---|
-| 0 | Shelved | On the shelf, not yet touched |
-| 1 | Inspected: skim | A 5 to 15 minute systematic skim |
+| 0 | Not yet read | On the shelf or the wishlist, not yet touched |
+| 1 | Inspected: skim | A short, systematic skim |
 | 2 | Inspected: superficial read | Read straight through, without stopping on hard parts |
-| 3 | Analytical (partial) | Careful reading of selected chapters |
+| 3 | Analytical (partial) | Careful reading of part of the book |
 | 4 | Analytical (complete) | Careful reading of the whole book |
 | 5 | Syntopical | Compared with other books on a shared question |
 
-Getting a whole shelf to level 1 is a real accomplishment. From there, Bathys helps you decide which books have earned a deeper read.
+Depth is set directly, at any level, at any time. Reading doesn't happen in order, so Bathys doesn't enforce one.
 
-Reading does not happen in order, so Bathys doesn't enforce one. Any level can be recorded for any book at any time, even days later, and a book's depth is simply the deepest level recorded. Each record of reading is a **pass**: a book, a level, when it happened, and a quick capture (what the book is about, how it's built, and a verdict: *go deeper*, *park it*, or *let it go*).
-
-You can report a pass after the fact in a few seconds, or run a **live session**: about ten minutes, one book, one level, with a gentle timer and a guided checklist that shows one step at a time so a wandering mind has somewhere to come back to.
+Adding a book takes seconds: type the title, search for it, or scan its barcode.
 
 ## Who It's For
 
-**As an app:** one reader (Ryan) on a phone at the bookshelf, a phone in bed, a tablet, or a desktop. It is single-user and private.
+**As an app:** one person (Ryan) on a phone at the bookshelf or in a bookstore, a tablet, or a desktop. It is single-user and private.
 
 **As a codebase:** students and new programmers who want to see software architecture done carefully on a familiar problem. Books, authors, and categories are a classic teaching domain. Bathys uses that domain to show:
 
@@ -38,7 +40,7 @@ The architecture is deliberately more structured than a typical Laravel app. Whe
 
 ## Status
 
-**v0.1.0, foundations.** The documents, the Laravel scaffold, and the architecture guards are in place; reading features start with the domain core. See [`docs/roadmap.md`](docs/roadmap.md).
+**v0.2.0 is live** at https://bathys.polarispixels.com: a coming-soon page, with public registration closed. Since then, merges to `main` deploy automatically once CI passes (listed under Unreleased in the [changelog](CHANGELOG.md)). Catalog features start with the domain core, Phase 1 step 1a. See [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Running it locally
 
@@ -53,7 +55,7 @@ composer test      # formatting, static analysis, and the full test suite
 
 ## Stack
 
-Laravel 13 (PHP 8.3+), Postgres, Inertia with React and TypeScript, Tailwind, passkey authentication, an MCP server for Claude, deployed on Laravel Forge. See [`docs/adr/`](docs/adr/README.md) for why.
+Laravel 13 (PHP 8.4), Postgres, Inertia with React and TypeScript, Tailwind, passkey authentication, an MCP server for Claude, deployed on Laravel Forge. See [`docs/adr/`](docs/adr/README.md) for why.
 
 ## How the Docs Are Organized
 
@@ -84,7 +86,7 @@ docs/
 | How secrets are handled | [Secrets and configuration](docs/deployment.md#secrets-and-configuration) |
 | How AI tools and models are used to build it | [`docs/ai-tooling.md`](docs/ai-tooling.md) |
 
-**Suggested reading order for learners:** the spec's *Intent* and *Depth Ladder* sections first (the problem), then the [ADR index](docs/adr/README.md) (the goals), then ADR-0002 and ADR-0003 (the core architectural idea), then the rest.
+**Suggested reading order for learners:** the spec's *Intent*, *The Book*, and *Depth* sections first (the problem), then the [ADR index](docs/adr/README.md) (the goals), then ADR-0002 and ADR-0003 (the core architectural idea), then the rest.
 
 ### Conventions
 
