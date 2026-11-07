@@ -36,7 +36,7 @@ Bathys is a private, single-user reading tool that measures depth reached in a b
 Every command here has been run in this repo. Keep it that way: never document a command you haven't run.
 
 ```bash
-docker compose up -d    # local Postgres 17 on :5433 (Docker Desktop: enable WSL integration for the distro)
+docker compose up -d    # local Postgres 18 on :5433 (Docker Desktop: enable WSL integration for the distro)
 composer dev            # server, queue, logs, and Vite together
 composer test           # Pint check + Larastan (level 7) + the whole Pest suite
 composer ci:check       # what CI runs: frontend lint/format, TypeScript, then composer test

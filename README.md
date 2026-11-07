@@ -45,7 +45,7 @@ The architecture is deliberately more structured than a typical Laravel app. Whe
 Requires PHP 8.4, Composer, Node 22 or newer, and Docker (for Postgres).
 
 ```bash
-docker compose up -d   # Postgres 17 on localhost:5433
+docker compose up -d   # Postgres 18 on localhost:5433
 composer setup     # install dependencies, create .env, migrate, build the frontend
 composer dev       # run the app at http://localhost:8000
 composer test      # formatting, static analysis, and the full test suite
