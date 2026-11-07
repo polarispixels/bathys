@@ -1,0 +1,20 @@
+# Secrets: never committed. .env.example is committed and documents every variable.
+.env
+.env.backup
+.env.production
+
+# Claude Code: personal permissions and worktrees stay local.
+# .claude/settings.json (shared rules) IS committed.
+/.claude/settings.local.json
+/.claude/worktrees/
+
+# superpowers working files (subagent briefs, progress ledgers, brainstorm scratch)
+/.superpowers/
+
+# Editors and OS
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
+
+# The Laravel scaffold (Phase 1, step 0) adds its own entries below this line.
