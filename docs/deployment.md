@@ -20,7 +20,7 @@ PHP and Node run natively in WSL. Docker runs only Postgres, the same pattern as
 docker compose up -d     # Postgres 17 on localhost:5433, databases bathys and bathys_test
 ```
 
-Port 5433 avoids a clash with polaris-pixels' container on 5432. `.env.example` already points at it. Docker Desktop must have WSL integration turned on for the Ubuntu distro (Docker Desktop, Settings, Resources, WSL integration).
+Port 5433 avoids a clash with polaris-pixels' container on 5432. `.env.example` already points at it. Docker Desktop must have WSL integration turned on for the distro (Docker Desktop, Settings, Resources, WSL integration, then enable the distro by name). If `docker` is "not found in this WSL 2 distro", that switch is off. Verified November 7, 2026: Laravel in WSL reaches the container on port 5433 and migrates.
 
 There is no staging environment. For a single-user app, CI plus a quick rollback ([below](#rollback)) costs less than maintaining a second server. Revisit this if Bathys gains users.
 
