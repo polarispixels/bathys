@@ -9,7 +9,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 ### Changed
 - **Re-scoped from a reading tool to a personal book catalog** (spec v0.4): the shelf, the wishlist, editable categories, and one rating per book, the Adler depth level (0 to 5) set directly. Version 1 adds books by hand, by title search, and by ISBN barcode scan. Passes, sessions, checklists, focus aids, captures, sections, the next-up picker, extra facets, relationships, syntopical work, review summaries, discovery, purchase links, and shelf-photo import moved to the spec's Later section.
 - Roadmap Phase 1 re-planned for the catalog; Phase 3 folded into Later; GitHub milestones renamed (Phase 1: Catalog, Phase 2: MCP, Later), and the queue-worker issue (#9) moved to Later.
-- README, CLAUDE.md, the deployment doc, the coming-soon page, and the GitHub repository description now describe the catalog.
+- README, CLAUDE.md, `core/README.md`, the `security-reviewer` agent, the deployment doc, the coming-soon page, and the GitHub repository description now describe the catalog.
 - Doc drift fixed: README status (v0.2.0 is live, with CI deploys since) and PHP 8.4 in its stack; the roadmap's Phase 0 lists ADR-0010, the live production setup, and the CI deploy job, and its step 0 entry no longer says CI is waiting for a GitHub repository.
 - `docs/ai-tooling.md` updated for the catalog scope (no session screen, dim mode, or vision adapter in version 1) and checked against the current subagent documentation (`/agents` no longer lists subagents; `claude plugin validate .claude/agents` checks them). `docs/development.md` aligns its CLAUDE.md budget with CLAUDE.md (12,000 characters for our part, 30,000 in total) and names the plugin-review tools.
 
