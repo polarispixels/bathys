@@ -6,6 +6,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+### Fixed
+- `llms.txt` summaries fall back to a document's first labeled line when it has no plain paragraph, so plan documents no longer get an empty description.
+
 ### Added
 - Design, plan, and the first version of `contracts/openapi.yaml` (the JSON:API `books` resource schemas) for the shelf slice, a walking skeleton through every layer that replaces the coming-soon page with the shelf. Ryan's reorder: the slice comes before steps 1a to 1f, and the roadmap says which parts of each it delivers early.
 

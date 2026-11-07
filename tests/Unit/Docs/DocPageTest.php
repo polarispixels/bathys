@@ -36,3 +36,9 @@ it('is empty when the document has only a heading', function () {
 it('replaces markdown links with their text', function () {
     expect(docPageFor("# T\n\nSee [the spec](spec.md) now.\n")->firstParagraph())->toBe('See the spec now.');
 });
+
+it('falls back to the first labeled line when there is no plain paragraph', function () {
+    $md = "# Plan\n\n> For agents: read this first.\n\n**Goal:** Ship the shelf.\n\n- a\n- b\n";
+
+    expect(docPageFor($md)->firstParagraph())->toBe('Goal: Ship the shelf.');
+});
