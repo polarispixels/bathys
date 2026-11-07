@@ -16,8 +16,18 @@ jobs:
   ci:
     runs-on: ubuntu-latest
 
-    # Same engine as production. `composer setup` migrates against it; the
-    # PHP test suite uses its own database settings from phpunit.xml.
+    # Throwaway credentials for the CI-only database below; not secrets. Job
+    # level, so `composer setup` and `composer ci:check` (the test suite) both
+    # see them. PHPUnit does not override variables that are already set.
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: bathys
+      DB_USERNAME: bathys
+      DB_PASSWORD: bathys
+
+    # Same engine as production.
     services:
       postgres:
         image: postgres:18
@@ -53,15 +63,7 @@ jobs:
         with:
           node-version: '22'
 
-      # Throwaway credentials for the CI-only database above; not secrets.
       - name: Setup Application
-        env:
-          DB_CONNECTION: pgsql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 5432
-          DB_DATABASE: bathys
-          DB_USERNAME: bathys
-          DB_PASSWORD: bathys
         run: composer setup
 
       - name: Run CI Checks

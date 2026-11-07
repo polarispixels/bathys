@@ -23,3 +23,11 @@ arch('ports depend on nothing in the application layer')
 arch('the core declares strict types')
     ->expect('Bathys')
     ->toUseStrictTypes();
+
+arch('only the persistence adapter, factories, and seeders use the BookRecord model')
+    ->expect('App\Models\BookRecord')
+    ->toOnlyBeUsedIn(['App\Adapters\Persistence', 'Database\Factories', 'Database\Seeders']);
+
+arch('controllers call use cases, never repositories, adapters, or records')
+    ->expect('App\Http\Controllers')
+    ->not->toUse(['App\Models\BookRecord', 'Bathys\Ports', 'App\Adapters']);
