@@ -1,6 +1,6 @@
 # Design: the documentation site at /docs
 
-**Status:** Draft, November 7, 2026. Frozen once its plan ships.
+**Status:** Frozen, November 7, 2026 (the plan shipped as v0.4.0).
 **Roadmap item:** [Phase 1, docs site](../roadmap.md#phase-1-catalog)
 **Why:** [ADR-0011](../adr/0011-docs-site-rendered-from-the-repository.md)
 
@@ -115,7 +115,9 @@ If a parser finds nothing (a format change), the page still renders and the piec
 - The front page shows the current version, a changelog paragraph, and at least the 1a row of the roadmap with its status.
 - The roadmap parser shows the Phase 0 table's two-column rows (`Item | Status`) with an empty step column, and renders the Phase 1 "1.0.0" row without a step.
 
-## Open question (Ryan)
+## Open question (Ryan), resolved November 7, 2026
+
+**Resolved:** Ryan decided the repository goes public, so `docs.repository_url` defaults to the GitHub repository and the site links to it. The original question, kept for the record:
 
 - **The GitHub repository is private.** The docs link to it in three ways: non-catalog files (the contract, scripts, CLAUDE.md), the footer, and the issue and milestone links already written into the roadmap and README. A stranger gets a 404 on each. Either the repository becomes public (it is a teaching codebase, so this is the natural end state) and the site links to it, or it stays private and `docs.repository_url` stays empty, the footer has no repository link, and the hand-written issue links stay as they are. The build works either way; only the config value changes.
 
