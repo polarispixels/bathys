@@ -51,8 +51,9 @@ it('shows the live version, its release date, and the roadmap on the front page'
 });
 
 it('publishes llms.txt with a markdown link for every page', function () {
+    config(['app.url' => 'https://example.test/']);
     $response = $this->get('/llms.txt')->assertOk()->assertHeader('Content-Type', 'text/plain; charset=utf-8');
-    $base = rtrim((string) config('app.url'), '/');
+    $base = 'https://example.test';
     $body = (string) $response->getContent();
 
     expect($body)->toStartWith("# Bathys\n\n> ")
@@ -60,7 +61,10 @@ it('publishes llms.txt with a markdown link for every page', function () {
     foreach ((new DocsCatalog(base_path()))->all() as $page) {
         expect($body)->toContain("({$base}/docs/{$page->slug}.md)");
     }
-    if ($base !== 'http://localhost') {
-        expect($body)->not->toContain('http://localhost/docs/');
+    expect($body)->not->toContain('http://localhost');
+    foreach (explode("\n", $body) as $line) {
+        if (str_starts_with($line, '- [')) {
+            expect($line)->toMatch('/\): \S/');
+        }
     }
 });

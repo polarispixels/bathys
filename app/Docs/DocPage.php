@@ -54,7 +54,7 @@ final readonly class DocPage
                 continue;
             }
 
-            if ($block !== [] && preg_match('/^(#|\||>|[-*+]\s|\d+[.)]\s|---|\*\*\*)/', $block[0]) !== 1) {
+            if ($block !== [] && preg_match('/^(#|\||>|[-*+]\s|\*\*[^*]+:\*\*|\d+[.)]\s|---|\*\*\*)/', $block[0]) !== 1) {
                 return implode(' ', $block);
             }
             $block = [];

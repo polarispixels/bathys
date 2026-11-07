@@ -72,7 +72,7 @@ final class DocsController
             $title,
             $base,
             $slug === '' ? 'index' : $slug,
-            mb_substr($page->firstParagraph(), 0, 160),
+            $this->cut($page->firstParagraph(), 160),
         );
 
         $front = $this->catalog->front();
@@ -97,6 +97,20 @@ final class DocsController
         }
 
         return response(implode("\n", $lines)."\n", 200, ['Content-Type' => 'text/plain; charset=utf-8']);
+    }
+
+    /** Cut at the last space within the limit, dropping trailing punctuation. */
+    private function cut(string $text, int $limit): string
+    {
+        if (mb_strlen($text) <= $limit) {
+            return $text;
+        }
+
+        $head = mb_substr($text, 0, $limit + 1);
+        $space = mb_strrpos($head, ' ');
+        $head = $space === false ? mb_substr($text, 0, $limit) : mb_substr($head, 0, $space);
+
+        return rtrim($head, " ,;:-(\u{2013}");
     }
 
     private function find(string $slug): DocPage
