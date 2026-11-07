@@ -42,25 +42,15 @@
         </header>
 
         <div class="mx-auto max-w-6xl px-4 py-6 md:flex md:gap-8">
-            <details class="mb-6 md:mb-0 md:block md:w-64 md:shrink-0" open>
-                <summary class="cursor-pointer font-medium md:hidden">Contents</summary>
-                <nav aria-label="Documentation" class="mt-3 space-y-4 text-sm md:mt-0">
-                    @foreach ($catalog->groups() as $group => $pages)
-                        <div>
-                            <h2 class="mb-1 font-semibold text-neutral-500 dark:text-neutral-400">{{ $group }}</h2>
-                            <ul class="space-y-1">
-                                @foreach ($pages as $item)
-                                    <li>
-                                        <a href="/docs/{{ $item->slug }}"
-                                           @if ($item->slug === $page->slug) aria-current="page" @endif
-                                           class="block underline-offset-2 hover:underline aria-[current=page]:font-semibold">{{ $item->title }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endforeach
-                </nav>
+            {{-- The nav is rendered twice because a closed <details> hides its children
+                 at every breakpoint, so one copy cannot serve both phone and desktop. --}}
+            <details class="mb-6 md:hidden">
+                <summary class="cursor-pointer font-medium">Contents</summary>
+                @include('docs.nav')
             </details>
+            <aside class="hidden md:block md:w-64 md:shrink-0">
+                @include('docs.nav')
+            </aside>
 
             <main class="prose min-w-0 flex-1 dark:prose-invert max-w-none">
                 @yield('content')
