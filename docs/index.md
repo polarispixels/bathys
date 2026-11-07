@@ -8,3 +8,5 @@ Bathys is a private book catalog. It holds the shelf (books Ryan owns) and the w
 - [Decisions](adr/README.md): the architecture decision records.
 - [Roadmap](roadmap.md): what is next and what is deferred.
 - [Development](development.md): how work flows, from idea to release.
+
+The status below is built from the repository on every deploy, so it is never out of date.

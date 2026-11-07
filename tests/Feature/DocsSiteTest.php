@@ -40,3 +40,12 @@ it('lists every document in the sidebar', function () {
         $response->assertSee('href="/docs/'.$page->slug.'"', escape: false);
     }
 });
+
+it('shows the live version, its release date, and the roadmap on the front page', function () {
+    $version = config('app.version');
+    $this->get('/docs')->assertOk()
+        ->assertSee("Version {$version}")
+        ->assertSee('Where things stand')
+        ->assertSee('Phase 1: Catalog')
+        ->assertSee('Domain core');
+});

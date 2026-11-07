@@ -7,6 +7,8 @@ namespace App\Http\Controllers;
 use App\Docs\DocPage;
 use App\Docs\DocsCatalog;
 use App\Docs\MarkdownRenderer;
+use App\Docs\ReleaseNotes;
+use App\Docs\RoadmapBoard;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
 
@@ -30,7 +32,17 @@ final class DocsController
 
     public function index(): View
     {
-        return $this->page($this->catalog->front(), 'docs.index');
+        $release = ReleaseNotes::latest(
+            (string) file_get_contents(base_path('CHANGELOG.md')),
+            (string) config('app.version'),
+        );
+        $board = RoadmapBoard::fromMarkdown((string) file_get_contents(base_path('docs/roadmap.md')));
+
+        return $this->page($this->catalog->front(), 'docs.index', [
+            'release' => $release,
+            'board' => $board,
+            'renderer' => $this->renderer,
+        ]);
     }
 
     public function show(string $slug): View
@@ -55,10 +67,11 @@ final class DocsController
 
     /**
      * @param  view-string  $view
+     * @param  array<string, mixed>  $extra
      */
-    private function page(DocPage $page, string $view): View
+    private function page(DocPage $page, string $view, array $extra = []): View
     {
-        return view($view, [
+        return view($view, $extra + [
             'catalog' => $this->catalog,
             'page' => $page,
             'html' => $this->renderer->render($page),
