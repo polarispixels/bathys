@@ -40,7 +40,7 @@ How Bathys is built, day to day. This method draws on three earlier projects (bl
 | `CHANGELOG.md` | What changed in each release | Every merge (into `[Unreleased]`) and every release |
 | `CLAUDE.md` | Rules, pointers, and traps an agent must always have in mind | Rarely; see [hygiene](#claudemd-hygiene) |
 
-The documents in this table are also served at `/docs`, rendered from these files on every request (ADR-0011).
+The markdown documents under `docs/`, plus the README, the changelog, and `core/README.md`, are also served at `/docs`, rendered from these files on every request ([ADR-0011](adr/0011-docs-site-rendered-from-the-repository.md)).
 
 Rule of thumb: **the spec says what, an ADR says why it's shaped like this, a design says how for one feature, a plan says in what order.**
 

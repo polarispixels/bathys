@@ -16,6 +16,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 - Design for the domain core, Phase 1 step 1a (`docs/designs/2026-11-07-domain-core-design.md`): the book, its value objects, status, depth, and categories as plain PHP. Spec v0.5 records the three decisions it raised (Decisions Log 17 to 19).
 - `composer.json` declares `ext-intl` and `ext-mbstring`, which the domain core's Unicode normalization needs.
 
+### Security
+- Docs routes run without sessions or CSRF, are rate limited, and send a public five-minute cache header; symlinked files under `docs/` are never served.
+
+### Fixed
+- The docs front page renders status cells as inline markdown (a badge for the first word, then the rest), and the docs header links back to the front page.
+
 ### Changed
 - The domain core design applies a Claude Desktop review: NFC normalization and Unicode whitespace for every text value, `https`-only cover URLs, `addedAt` in UTC, and `Depth::tryFrom()` at the edges.
 

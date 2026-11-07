@@ -17,7 +17,7 @@ How it relates to the other docs: [`development.md`](development.md) says how a 
 5. **Every tool earns its context.** Each enabled plugin adds tokens to every turn. `claude plugin details <name>` shows the always-on cost, and the **Installed** tab in `/plugin` groups plugins under **Not used recently**. The monthly plugin review ([development](development.md#skills-and-plugins)) disables what hasn't been used.
 6. **Add a tool when its phase arrives.** Each row below names the roadmap step it starts at. Installing everything on day one pays the context cost for months before the tool is useful.
 7. **A tool choice with ongoing cost or lock-in is an architectural decision.** It gets an ADR before it is adopted (a monitoring service, a paid metadata source).
-8. **Production stays out of reach.** Routine deploys go through CI only ([deployment](deployment.md#the-pipeline)). The one exception is setup and operations through the narrowly scoped Forge API token ([deployment](deployment.md#forge-api-token)), which can't delete sites, add SSH keys, or run commands. No MCP server gets write access to the production server, which hosts other sites.
+8. **Production stays out of reach.** Routine deploys go through CI only ([deployment](deployment.md#the-pipeline)). The one exception is setup and operations through the narrowly scoped Forge API token ([deployment](deployment.md#forge-api-token)), which can't delete sites or add SSH keys, but can replace the deploy script and trigger a deploy (running shell commands as `forge` on the server) and read the environment file, so treat it like server access. No MCP server gets write access to the production server, which hosts other sites.
 
 ---
 
