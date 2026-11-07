@@ -180,7 +180,7 @@ A follow-up that someone has to *do* (an ops chore, a deferred fix, a decision t
 
 **Adding a project skill** (`.claude/skills/`) is justified only when a procedure is long, needed occasionally, and harmless if it fails to load. Anything that must happen every time (like the release checklist) stays in CLAUDE.md. That was a deliberate call in indigo-nebula's cleanup: a skill that doesn't load costs a botched release.
 
-**Plugins are reviewed monthly.** Disable what hasn't been used in a month; unused plugins add skill listings to every session's context. `claude plugin details <name>` shows a plugin's context cost. The model and price facts in `docs/ai-tooling.md` are re-verified quarterly ([#13](https://github.com/polarispixels/bathys/issues/13)).
+**Plugins are reviewed monthly.** Disable what hasn't been used in a month; unused plugins add skill listings to every session's context. `claude plugin details <name>` shows a plugin's context cost, and the **Installed** tab in `/plugin` groups plugins under **Not used recently**. The model and price facts in `docs/ai-tooling.md` are re-verified quarterly ([#13](https://github.com/polarispixels/bathys/issues/13)).
 
 ### CLAUDE.md hygiene
 
@@ -190,7 +190,7 @@ CLAUDE.md loads into every session, so every character costs every session. It h
 - pointers to where detail lives,
 - traps that have bitten before.
 
-It does not hold release history, directory listings, dependency lists, or feature walkthroughs. Budget: about 15,000 characters. When a section grows past a few paragraphs, move it into `docs/` and leave a one-line pointer.
+It does not hold release history, directory listings, dependency lists, or feature walkthroughs. Budget: our part (everything above Laravel Boost's generated block) stays under about 12,000 characters, and the whole file under 30,000, the same figures CLAUDE.md states. When a section grows past a few paragraphs, move it into `docs/` and leave a one-line pointer.
 
 ### Memory
 

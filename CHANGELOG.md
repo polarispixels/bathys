@@ -10,6 +10,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 - **Re-scoped from a reading tool to a personal book catalog** (spec v0.4): the shelf, the wishlist, editable categories, and one rating per book, the Adler depth level (0 to 5) set directly. Version 1 adds books by hand, by title search, and by ISBN barcode scan. Passes, sessions, checklists, focus aids, captures, sections, the next-up picker, extra facets, relationships, syntopical work, review summaries, discovery, purchase links, and shelf-photo import moved to the spec's Later section.
 - Roadmap Phase 1 re-planned for the catalog; Phase 3 folded into Later; GitHub milestones renamed (Phase 1: Catalog, Phase 2: MCP, Later), and the queue-worker issue (#9) moved to Later.
 - README, CLAUDE.md, the deployment doc, the coming-soon page, and the GitHub repository description now describe the catalog.
+- `docs/ai-tooling.md` updated for the catalog scope (no session screen, dim mode, or vision adapter in version 1) and checked against the current subagent documentation (`/agents` no longer lists subagents; `claude plugin validate .claude/agents` checks them). `docs/development.md` aligns its CLAUDE.md budget with CLAUDE.md (12,000 characters for our part, 30,000 in total) and names the plugin-review tools.
 
 ### Added
 - Production: https://bathys.polarispixels.com on Forge (polished-monaco), zero-downtime deployments, Let's Encrypt for the domain and `www`, a read-only GitHub deploy key for Forge.
