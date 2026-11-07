@@ -6,6 +6,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+### Added
+- Design for the domain core, Phase 1 step 1a (`docs/designs/2026-11-07-domain-core-design.md`): the book, its value objects, status, depth, and categories as plain PHP. Spec v0.5 records the three decisions it raised (Decisions Log 17 to 19).
+- `composer.json` declares `ext-intl` and `ext-mbstring`, which the domain core's Unicode normalization needs.
+
+### Changed
+- The domain core design applies a Claude Desktop review: NFC normalization and Unicode whitespace for every text value, `https`-only cover URLs, `addedAt` in UTC, and `Depth::tryFrom()` at the edges.
+
 ## [0.3.0] - 2026-11-07
 
 The re-scope to a book catalog, the production pipeline, and the tooling for the build. Live at https://bathys.polarispixels.com.
