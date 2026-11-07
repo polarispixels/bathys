@@ -7,6 +7,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 ## [Unreleased]
 
 ### Added
+- `App\Docs\DocsCatalog`, the list of documentation pages for the `/docs` site, built by scanning the repository so a new document needs no registration.
 - Design, ADR-0011, and plan for the documentation site at `/docs`, rendered from the repository's markdown with a self-updating front page (`docs/designs/2026-11-07-docs-site-design.md`, `docs/plans/2026-11-07-docs-site.md`). Built first, before the domain core, as a quick win.
 - Design for the domain core, Phase 1 step 1a (`docs/designs/2026-11-07-domain-core-design.md`): the book, its value objects, status, depth, and categories as plain PHP. Spec v0.5 records the three decisions it raised (Decisions Log 17 to 19).
 - `composer.json` declares `ext-intl` and `ext-mbstring`, which the domain core's Unicode normalization needs.
