@@ -2,7 +2,7 @@
 
 **Document Type:** Project Spec
 **Status:** DRAFT (re-scoped to a catalog; ready for design and implementation planning)
-**Version:** 0.4
+**Version:** 0.5
 **Last Updated:** November 7, 2026
 **Owner:** Ryan Grissinger
 **Related:** [Architecture Decision Records](adr/README.md)
@@ -86,7 +86,11 @@ Bathys has a second purpose: it is a **teaching codebase**. The repository is me
 
 **Categories** are an editable list, never hardcoded. Ryan can add, rename, and remove them. Removing a category takes it off its books; it never removes the books.
 
-**Moving a book** from Wanted to On the shelf keeps everything else about it.
+**Moving a book** between Wanted and On the shelf, in either direction, keeps everything else about it. A book that leaves the shelf (lent, given away, sold) is removed or moved back to Wanted; this is rare for Ryan, so a separate "no longer owned" status is deferred (see [Later](#later)).
+
+**Authors** are names as printed on the cover, in cover order. "Everything by this author" is a filter on the name; authors are not records of their own (see [Later](#later)).
+
+**Category names** match ignoring case and surrounding spaces: "Fiction", "fiction", and " Fiction " are one category, shown with the capitalization it was first typed with.
 
 ---
 
@@ -189,6 +193,11 @@ Not scheduled. Recorded so they aren't re-proposed as new. Each would need Ryan'
 - **Book relationships:** links such as "responds to", "builds on", "contradicts"
 - **Questions and syntopical work:** books attached to questions Ryan wants to understand, with suggested comparisons
 
+**From the domain core design (step 1a):**
+
+- **A "no longer owned" status** for books that were on the shelf and left it (lent, given away, sold). Rare for Ryan; for now such a book is removed or moved back to Wanted.
+- **Author records** with their own pages, so one author's books can be browsed and a misspelled name fixed in one place. For now authors are names on the book, and "everything by this author" is a filter on the name.
+
 **Research and buying:**
 
 - **Review summaries** written by Claude through MCP
@@ -207,7 +216,7 @@ Not scheduled. Recorded so they aren't re-proposed as new. Each would need Ryan'
 
 ## Decisions Log
 
-Questions 1 to 8 come from v0.1, 9 to 12 from review of v0.2, and 13 to 16 from the re-scope. All were answered on November 7, 2026. Rows marked *superseded* record what was decided at the time; the row named in the decision replaces them.
+Questions 1 to 8 come from v0.1, 9 to 12 from review of v0.2, 13 to 16 from the re-scope, and 17 to 19 from the domain core design (step 1a). All were answered on November 7, 2026. Rows marked *superseded* record what was decided at the time; the row named in the decision replaces them.
 
 | # | Question | Decision |
 |---|---|---|
@@ -227,6 +236,9 @@ Questions 1 to 8 come from v0.1, 9 to 12 from review of v0.2, and 13 to 16 from 
 | 14 | What does a book's one rating measure? | **How deep Ryan has read it:** the Adler depth level, 0 to 5, set directly on the book. See [Depth](#depth). |
 | 15 | Which ways of adding a book are in version 1? | **By hand, title search, and ISBN barcode scan.** Shelf-photo import is Later; adding through Claude comes with the MCP server in Phase 2. |
 | 16 | Can covering every section raise a book's level? | **No, and books are not tracked by section at all.** Ryan never intended to break books into sections, so the question is moot. |
+| 17 | What happens to a book that leaves the shelf (lent, given away, sold)? | **Remove it, or move it back to Wanted.** It's rare for Ryan. A separate "no longer owned" status is in [Later](#later). |
+| 18 | Are "Fiction", "fiction", and " Fiction " the same category? | **Yes.** Category names match ignoring case and surrounding spaces, and keep the capitalization first typed. |
+| 19 | Are authors their own records? | **No, names on the book, in cover order.** Browsing everything by one author is a filter on the name. Author records are in [Later](#later). |
 
 ## Open Questions
 
@@ -241,6 +253,9 @@ Phase 1, step 1a: the domain core (Book, Status, Category, Depth, and their valu
 ---
 
 ## Version History
+
+**v0.5 (November 7, 2026)**
+- Decisions 17 to 19 from the domain core design ([`designs/2026-11-07-domain-core-design.md`](designs/2026-11-07-domain-core-design.md)): a book that leaves the shelf is removed or moved back to Wanted; category names match ignoring case and surrounding spaces; authors are names on the book. The Book section states all three. Later gains a "no longer owned" status and author records.
 
 **v0.4 (November 7, 2026)**
 - Re-scoped from a reading tool to a personal book catalog (Decisions Log 13 to 16): the shelf, the wishlist, editable categories, and one rating per book, the Adler depth level set directly.

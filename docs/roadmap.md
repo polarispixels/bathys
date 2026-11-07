@@ -12,7 +12,7 @@ Phase scope comes from [the spec's phasing](spec.md#suggested-phasing). Steps co
 
 | Item | Status |
 |---|---|
-| Product spec (now v0.4), ADR-0001 to ADR-0010, README | done (docs only) |
+| Product spec (now v0.5), ADR-0001 to ADR-0010, README | done (docs only) |
 | Development method, deployment and secrets, CLAUDE.md, roadmap, changelog | done (docs only) |
 | Production at https://bathys.polarispixels.com (Forge, zero-downtime, Let's Encrypt) and the CI deploy job | done: live since v0.2.0; the CI deploy job and the Forge setup shipped in v0.3.0 |
 | Issue tracking (milestones, issue forms, triage) and AI tooling (`docs/ai-tooling.md`, four subagents, project plugins) | done v0.3.0 |
