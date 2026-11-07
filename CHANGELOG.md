@@ -6,6 +6,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+### Added
+- Design, plan, and the first version of `contracts/openapi.yaml` (the JSON:API `books` resource schemas) for the shelf slice, a walking skeleton through every layer that replaces the coming-soon page with the shelf. Ryan's reorder: the slice comes before steps 1a to 1f, and the roadmap says which parts of each it delivers early.
+
 ## [0.4.0] - 2026-11-07
 
 The documentation site, and the repository made public. Read it at https://bathys.polarispixels.com/docs.
