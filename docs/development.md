@@ -168,16 +168,19 @@ A follow-up that someone has to *do* (an ops chore, a deferred fix, a decision t
 
 ### Skills and plugins
 
-| Tool | Use it for |
+**[`docs/ai-tooling.md`](ai-tooling.md) is the source of truth** for which model, plugin, skill, subagent, and MCP server handles each phase and concern, and when each tool is added. In short:
+
+| Layer | What |
 |---|---|
-| **superpowers** (plugin) | The lifecycle above: brainstorming, writing-plans, subagent-driven-development, test-driven-development, requesting-code-review, finishing-a-development-branch, systematic-debugging, verification-before-completion |
-| **Laravel Boost** (Composer dev dependency, from Phase 1 step 0) | Version-correct Laravel documentation and a Laravel-aware MCP server for the agent |
-| **avoid-ai-writing** (user skill) | A pass over prose that people will read: README, docs, UI copy |
-| **code-review** / **security-review** (built in) | Before merging anything that touches authentication, secrets, or external input |
+| Always on (project scope, committed in `.claude/settings.json`) | **superpowers** for the lifecycle above; **php-lsp** for diagnostics and symbol navigation |
+| From Composer | **Laravel Boost**: version-correct Laravel docs, schema and log tools, seven skills |
+| Subagents (committed in `.claude/agents/`) | `implementer`, `reviewer`, `security-reviewer`, `scout` |
+| Prose | **avoid-ai-writing** (user skill) on anything people will read |
+| Added when their step arrives | `security-guidance` (1e), `frontend-design`, `typescript-lsp`, `playwright` (1f), `mcp-server-dev` (Phase 2) |
 
 **Adding a project skill** (`.claude/skills/`) is justified only when a procedure is long, needed occasionally, and harmless if it fails to load. Anything that must happen every time (like the release checklist) stays in CLAUDE.md. That was a deliberate call in indigo-nebula's cleanup: a skill that doesn't load costs a botched release.
 
-**Plugins are reviewed occasionally.** Disable what hasn't been used in a month. Unused plugins add skill listings to every session's context.
+**Plugins are reviewed monthly.** Disable what hasn't been used in a month; unused plugins add skill listings to every session's context. `claude plugin details <name>` shows a plugin's context cost. The model and price facts in `docs/ai-tooling.md` are re-verified quarterly ([#13](https://github.com/polarispixels/bathys/issues/13)).
 
 ### CLAUDE.md hygiene
 
@@ -201,7 +204,7 @@ Claude's memory (outside the repo) holds only what the repository cannot: Ryan's
 
 ### Model assignment
 
-See [Agents and models](../CLAUDE.md#agents-and-models) in CLAUDE.md.
+See [Agents and models](../CLAUDE.md#agents-and-models) in CLAUDE.md for the summary, and [`docs/ai-tooling.md`](ai-tooling.md#models-and-effort) for the reasoning and costs.
 
 ---
 

@@ -66,6 +66,7 @@ docs/
 ├── roadmap.md       Phases, status board, deliberate deferrals
 ├── development.md   How we work: lifecycle, testing, commits, versioning, Claude
 ├── deployment.md    How it ships: CI, Forge, rollback, secrets
+├── ai-tooling.md    Which model, plugin, and subagent does each kind of work
 ├── adr/             Why it is built the way it is (one record per decision)
 ├── designs/         How one feature will work, written before it is built
 └── plans/           The step-by-step build of each design
@@ -81,6 +82,7 @@ docs/
 | What's being built now, and what comes next | [`docs/roadmap.md`](docs/roadmap.md) |
 | How a change goes from idea to production | [`docs/development.md`](docs/development.md), then [`docs/deployment.md`](docs/deployment.md) |
 | How secrets are handled | [Secrets and configuration](docs/deployment.md#secrets-and-configuration) |
+| How AI tools and models are used to build it | [`docs/ai-tooling.md`](docs/ai-tooling.md) |
 
 **Suggested reading order for learners:** the spec's *Intent* and *Depth Ladder* sections first (the problem), then the [ADR index](docs/adr/README.md) (the goals), then ADR-0002 and ADR-0003 (the core architectural idea), then the rest.
 
