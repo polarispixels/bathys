@@ -80,7 +80,10 @@ The test folders mirror the architecture ([ADR-0007](adr/0007-core-beside-app-re
 | `tests/Adapters/` | Each adapter honors its port (shared suites run against in-memory *and* real implementations) | Seconds | Postgres; HTTP faked from recorded fixtures |
 | `tests/Feature/` | HTTP and Inertia end to end | Seconds | Postgres |
 | `tests/Contract/` | Responses match `contracts/openapi.yaml` | Seconds | Postgres |
-| `tests/Architecture/` | Dependency rules hold | Milliseconds | None |
+| `tests/Architecture/` | Dependency rules hold; the release version has a changelog entry | Milliseconds | None |
+| `tests/Unit/` | Framework-free logic in `app/` (rare; most such logic belongs in `core/`) | Milliseconds | None |
+
+Run one suite with `php artisan test --compact --testsuite=Core` (or `Architecture`, `Unit`, `Feature`). Until the persistence step, `tests/Feature/` runs on in-memory SQLite (the starter kit's default in `phpunit.xml`); adapter and contract tests move to Postgres when they arrive.
 
 Rules:
 
@@ -176,3 +179,4 @@ These rules apply to docs, UI copy, and commit messages:
 - No em dashes. Use a comma, colon, parentheses, or a period. En dashes in numeric ranges are fine.
 - Explain the *why*. This repository teaches; a decision without a reason is half a lesson.
 - Date things absolutely ("November 7, 2026"), never relatively ("last week").
+- **Markdown is not auto-formatted.** The frontend formatter (`vp check`) formats code and JSON but ignores `*.md`: it pads table columns to the widest cell, so editing one cell reflows the whole table and buries the real change in the diff. Keep tables in the compact `|---|` style.

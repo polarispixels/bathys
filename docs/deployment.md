@@ -37,7 +37,9 @@ push to main ──► GitHub Actions
 
 ### PHP version: one number, everywhere
 
-The PHP version must match in all five places: `composer.json` (`config.platform.php`), the Forge site, the queue worker, the scheduler cron, and the CI matrix. In indigo-nebula, a queue worker pinned to a different PHP version than the app crashed on startup, and supervisor stopped retrying it. All queued mail stopped, and nothing reported it. *Confirm the version at step 0.*
+**Bathys runs PHP 8.4.** The version must match in all five places: `composer.json` (`require.php` is `^8.4`; `config.platform.php` is `8.4.1`, the lowest patch Laravel 13's Symfony 8 components accept), the Forge site, the queue worker, the scheduler cron, and CI (`.github/workflows/tests.yml`). In indigo-nebula, a queue worker pinned to a different PHP version than the app crashed on startup, and supervisor stopped retrying it. All queued mail stopped, and nothing reported it.
+
+Node is 24 locally and in CI. Use the same on Forge.
 
 ### Deploy script (sketch, *confirm at step 17*)
 

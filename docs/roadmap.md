@@ -19,8 +19,8 @@ Phase scope comes from [the spec's phasing](spec.md#suggested-phasing). Steps co
 
 | Step | Item | Status |
 |---|---|---|
-| 0 | Scaffold Laravel 13 (React starter kit, Pest, Postgres, Boost, Pint, Larastan); `core/` autoload; architecture tests; version/changelog sync test; CI workflow without deploy | next |
-| 1a | Domain core: `DepthLevel`, value objects, `Format`/`Copy`, `Book`, `Pass` and depth as high-water mark, `Checklist`, `ReadingSession`, `Capture`/`Verdict`, `NextUpPicker`, facets | planned |
+| 0 | Scaffold Laravel 13 (React starter kit, Pest, Postgres, Boost, Pint, Larastan); `core/` autoload; architecture tests; version/changelog sync test; CI workflow without deploy | done v0.1.0: scaffold committed untouched, then PHP 8.4 pinned, Boost (Claude Code only), `core/` with dependency rules proven against a planted violation, release-consistency test, version meta tag, CI with Postgres. CI first runs once the GitHub repository exists. Local Postgres not yet installed (not needed until 1d). |
+| 1a | Domain core: `DepthLevel`, value objects, `Format`/`Copy`, `Book`, `Pass` and depth as high-water mark, `Checklist`, `ReadingSession`, `Capture`/`Verdict`, `NextUpPicker`, facets | next |
 | 1b | Application layer: ports, in-memory doubles, shared repository suite, use cases (`AddBook`, `RecordPass`, `EditPass`, `DeletePass`, `StartSession`, `CompleteSession`, `ResumeSession`, `ListNextUp` …) | planned |
 | 1c | OpenAPI contract for Phase 1 resources (**review checkpoint with Ryan**) | planned |
 | 1d | Persistence: migrations, `*Record` models, mappers, Eloquent repositories, composition root | planned |
