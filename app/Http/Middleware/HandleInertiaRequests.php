@@ -38,6 +38,9 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            // The release from package.json, shown subtly on every page so a
+            // deploy can be verified by eye (the meta tag serves scripts).
+            'appVersion' => config('app.version'),
             'auth' => [
                 'user' => $request->user(),
             ],
