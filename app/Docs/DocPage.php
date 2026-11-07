@@ -24,7 +24,8 @@ final readonly class DocPage
      * fence are skipped. So is a block that opens with a bold label such as
      * "**Status:** Accepted": specs, ADRs, and designs begin with those metadata
      * lines, and they are not a summary. Markdown links become their plain text.
-     * Empty when the document has no such paragraph.
+     * If there is no plain paragraph, the first labeled line ("**Goal:** ...")
+     * stands in, with the bold markers removed. Empty when there is neither.
      */
     public function firstParagraph(): string
     {
@@ -32,6 +33,7 @@ final readonly class DocPage
         $seenTitle = false;
         $inFence = false;
         $block = [];
+        $firstLabeled = null;
 
         foreach (array_merge($lines ?: [], ['']) as $line) {
             if (! $seenTitle) {
@@ -57,12 +59,21 @@ final readonly class DocPage
                 continue;
             }
 
+            if ($block !== [] && $firstLabeled === null && preg_match('/^\*\*[^*]+:\*\*/', $block[0]) === 1) {
+                $firstLabeled = implode(' ', $block);
+            }
+
             if ($block !== [] && preg_match('/^(#|\||>|[-*+]\s|\*\*[^*]+:\*\*|\d+[.)]\s|---|\*\*\*)/', $block[0]) !== 1) {
-                return (string) preg_replace('/\[([^\]]*)\]\([^)]*\)/', '$1', implode(' ', $block));
+                return self::plain(implode(' ', $block));
             }
             $block = [];
         }
 
-        return '';
+        return $firstLabeled === null ? '' : self::plain(str_replace('**', '', $firstLabeled));
+    }
+
+    private static function plain(string $text): string
+    {
+        return (string) preg_replace('/\[([^\]]*)\]\([^)]*\)/', '$1', $text);
     }
 }

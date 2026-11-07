@@ -85,7 +85,7 @@ The test folders mirror the architecture ([ADR-0007](adr/0007-core-beside-app-re
 | `tests/Architecture/` | Dependency rules hold; the release version has a changelog entry | Milliseconds | None |
 | `tests/Unit/` | Framework-free logic in `app/` (rare; most such logic belongs in `core/`) | Milliseconds | None |
 
-Run one suite with `php artisan test --compact --testsuite=Core` (or `Architecture`, `Unit`, `Feature`). Until the persistence step, `tests/Feature/` runs on in-memory SQLite (the starter kit's default in `phpunit.xml`); adapter and contract tests move to Postgres when they arrive.
+Run one suite with `php artisan test --compact --testsuite=Core` (or `Architecture`, `Unit`, `Adapters`, `Feature`). All framework suites run on Postgres: `bathys_test` locally, created by the Docker init script, and the CI service database.
 
 Rules:
 

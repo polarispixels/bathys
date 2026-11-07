@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DocsController;
+use App\Http\Controllers\Web\ShelfController;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
@@ -8,7 +9,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-Route::inertia('/', 'coming-soon')->name('home');
+Route::get('/', ShelfController::class)->middleware('throttle:60,1')->name('home');
 
 // Public documentation site. Stateless (no session, CSRF, or cookies), so the
 // responses are cacheable and a crawler cannot create session rows.

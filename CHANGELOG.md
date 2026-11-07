@@ -6,6 +6,24 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+### Security
+- `BookId` rejects a trailing newline; titles and authors reject control and bidirectional control characters; the home page is rate limited (60 a minute); `BookRecord` lists its fillable columns instead of allowing everything.
+
+### Changed
+- The seed migration writes the first shelf rows directly, so later schema changes cannot break fresh databases.
+
+### Fixed
+- `llms.txt` summaries fall back to a document's first labeled line when it has no plain paragraph, so plan documents no longer get an empty description.
+
+### Added
+- The home page lists the shelf, served through `ListShelf` and `BookResource`, the same JSON:API shape the contract describes.
+- An idempotent `ShelfSeeder` that adds the first eight books through `AddBook`, run by a migration so production seeds itself on deploy.
+- Persistence for the shelf slice: the `books` table on Postgres, `BookRecord`, `BookMapper`, `EloquentBookRepository`, the system clock and UUID v7 adapters, the `CoreServiceProvider` composition root, and architecture rules that keep records out of controllers. The test suite now runs on Postgres.
+- TypeScript types for the API, generated from `contracts/openapi.yaml` into `resources/js/types/api.d.ts` (`npm run contract:types`); `composer ci:check` fails if the committed file is stale.
+- The shelf slice's ports (`BookRepository`, `Clock`, `IdGenerator`), in-memory test doubles, a shared repository test suite, and the `AddBook` and `ListShelf` use cases.
+- The first domain classes: `Book` with its `Title`, `Author`, `BookId`, and `Status`, plain PHP in `core/` with framework-free tests.
+- Design, plan, and the first version of `contracts/openapi.yaml` (the JSON:API `books` resource schemas) for the shelf slice, a walking skeleton through every layer that replaces the coming-soon page with the shelf. Ryan's reorder: the slice comes before steps 1a to 1f, and the roadmap says which parts of each it delivers early.
+
 ## [0.4.0] - 2026-11-07
 
 The documentation site, and the repository made public. Read it at https://bathys.polarispixels.com/docs.
