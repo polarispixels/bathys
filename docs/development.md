@@ -109,6 +109,26 @@ Every issue gets one label from each group, the same convention as Bubbles and R
 
 `must-have` plus `small` is an obvious quick win; `wont-have` plus `large` is the bottom of the pile. Commits that resolve an issue say `Closes #N` in the body.
 
+### Milestones
+
+One [milestone](https://github.com/polarispixels/bathys/milestones) per phase in the spec: **Phase 1: Shelf and ladder**, **Phase 2: MCP and research**, **Phase 3: Relationships and discovery**. Every triaged issue belongs to one. MoSCoW labels are read against the issue's milestone: `must-have` means "Phase 1 can't ship without it" for a Phase 1 issue.
+
+### Filing an issue
+
+The **Bug** and **Idea** forms (`.github/ISSUE_TEMPLATE/`) are short enough to fill in on a phone. Each applies its `type:` label automatically. Blank issues stay allowed for ops chores and planning notes.
+
+### Triage
+
+At the start of each planning session (before a brainstorm or a plan), go through untriaged issues, meaning any issue without a milestone:
+
+1. **Label it:** one `moscow:`, one `effort:`, one `type:`.
+2. **Place it:** set the milestone. If it changes the plan, add or update the roadmap item or design, and link the issue there.
+3. **Close what won't happen:** label `moscow: wont-have` and close it with a sentence of reasoning, so the decision is findable later.
+
+### What belongs in an issue, not only in a doc
+
+A follow-up that someone has to *do* (an ops chore, a deferred fix, a decision to make) gets an issue, even if a doc also mentions it. Docs explain how things work; issues make sure the work happens. When a doc mentions pending work, it links the issue (for example, "turn on backups: #6").
+
 ## Branches and commits
 
 - **`main`** is always deployable. Nothing merges without green CI.

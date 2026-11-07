@@ -13,6 +13,7 @@ Bathys is a private, single-user reading tool that measures depth reached in a b
 | How we work: lifecycle, testing, versioning, Claude usage | [`docs/development.md`](docs/development.md) |
 | How it ships: CI, Forge, secrets | [`docs/deployment.md`](docs/deployment.md) |
 | What's next, and what's deliberately deferred | [`docs/roadmap.md`](docs/roadmap.md) |
+| Bugs, ideas, and follow-up chores | [GitHub Issues](https://github.com/polarispixels/bathys/issues), one milestone per phase; Ryan files them, often from his phone |
 | The API shape | `contracts/openapi.yaml` (once written; the contract wins over the code) |
 | Current behavior | the code and its tests; tests are the most precise record |
 | What changed, when | [`CHANGELOG.md`](CHANGELOG.md) and `git log` |
@@ -68,6 +69,8 @@ Everything else in the block (PHP style, Pint, Inertia v3 notes, `search-docs` b
 ## How work flows
 
 The full method is in [`docs/development.md`](docs/development.md). In short: brainstorm, then a design doc, then a plan, then a test-first build (usually subagent-driven), then a review, then a release.
+
+**Before planning, triage issues:** any issue without a milestone gets a `moscow:`, `effort:`, and `type:` label and a milestone ([triage](docs/development.md#triage)). Pending work that someone must *do* gets an issue, not only a line in a doc. You do all GitHub work (issues, labels, PRs, merges); don't hand Ryan `gh` commands.
 
 **Document locations override the superpowers skill defaults:**
 - Design docs: `docs/designs/YYYY-MM-DD-<topic>-design.md` (not `docs/superpowers/specs/`)

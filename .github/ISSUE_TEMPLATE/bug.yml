@@ -1,0 +1,21 @@
+name: Bug
+description: Something is broken or not working as expected.
+title: "Bug: "
+labels: ["type: bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, what you saw instead.
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where?
+      description: Page or screen, and device (phone, tablet, desktop).
+      placeholder: "Session screen, iPhone"
+  - type: markdown
+    attributes:
+      value: "Triage adds a `moscow:` and an `effort:` label and a milestone. See docs/development.md, Issues and labels."

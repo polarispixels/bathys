@@ -1,0 +1,15 @@
+name: Idea
+description: A feature, change, or thought to consider. Rough is fine.
+title: "Idea: "
+labels: ["type: feature"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What should Bathys do, and what made you think of it?
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "Triage folds ideas into the roadmap or a design, then labels or closes them. See docs/development.md, Issues and labels."

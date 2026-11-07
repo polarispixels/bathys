@@ -78,13 +78,26 @@ The script lives in the repository at [`deploy/forge-deploy.sh`](../deploy/forge
 
 ### Background work
 
+Not set up yet; tracked in [#9](https://github.com/polarispixels/bathys/issues/9).
+
 - **Queue worker:** needed from shelf-photo import onward (AI vision runs as a queued job). Same PHP version as the site.
 - **Scheduler cron:** `artisan schedule:run` every minute. Same PHP version.
 - **Failure alerts:** a failed queued job or a stuck queue must notify Ryan. indigo-nebula learned this after queued mail failed silently. *Confirm the channel (email or Slack) at step 23.*
 
+### Forge API token
+
+Setup and operations through Forge's API (not routine deploys, which use the deploy hook) use a token saved at `~/.config/forge/token` on Ryan's machine, readable only by him. It is used as `$(cat ~/.config/forge/token)`, so its value never appears in a command or log. Its scopes are deliberately narrow:
+
+- **Server:** `server:view`, `server:create-databases`
+- **Site:** `site:create`, `site:meta`, `site:manage-deploys`, `site:manage-project`, `site:manage-environment`, `site:manage-ssl`
+
+It can't delete sites or servers, add SSH keys, or run commands. Created November 7, 2026 with about a 90-day expiry; renewal is [#11](https://github.com/polarispixels/bathys/issues/11). The worker and scheduler ([#9](https://github.com/polarispixels/bathys/issues/9)) will need scopes it doesn't have.
+
+When reading site details from the API, never print the `deployment_url` field: it contains the deploy hook's secret token.
+
 ### Database backups
 
-Turn on scheduled Postgres backups before real data goes in, and **restore one once** to prove it works. A backup that has never been restored is only a hope. *Confirm at step 17.*
+Turn on scheduled Postgres backups before real data goes in, and **restore one once** to prove it works. A backup that has never been restored is only a hope. Tracked in [#6](https://github.com/polarispixels/bathys/issues/6).
 
 ---
 
@@ -135,7 +148,7 @@ Every variable is listed, with a comment and without a real value, in `.env.exam
 
 ### Authentication
 
-Bathys has one user and signs in with a passkey. There is no public registration route. The single user is created by an artisan command or seeder on first deploy (the same idea as indigo-nebula's seeded admin). Passkey recovery (a lost device) needs a documented path before 1.0. *Confirm at step 17.*
+Bathys has one user and signs in with a passkey. There is no public registration route. The single user is created by an artisan command or seeder on first deploy (the same idea as indigo-nebula's seeded admin). Creating the user is [#7](https://github.com/polarispixels/bathys/issues/7); a recovery path for a lost passkey device, required before 1.0, is [#8](https://github.com/polarispixels/bathys/issues/8).
 
 ---
 
@@ -145,8 +158,8 @@ The site went live early (November 7, 2026) for a coming-soon page. Done items a
 
 1. ~~Create the GitHub repository (private), the Forge site on `polished-monaco` with zero-downtime deployments and the repository, the DNS records, and the Let's Encrypt certificate.~~ Done November 7, 2026.
 2. ~~Leave Forge's push-to-deploy off; store the deploy hook as the `FORGE_DEPLOY_HOOK` GitHub secret.~~ Done November 7, 2026. CI's deploy job verified end to end (Forge deployment 82378358).
-3. ~~PHP 8.4 on the site.~~ Done. The worker and scheduler get the same version when they are added (step 23).
+3. ~~PHP 8.4 on the site.~~ Done. The worker and scheduler get the same version when they are added ([#9](https://github.com/polarispixels/bathys/issues/9)).
 4. ~~Production environment values.~~ Done (app URL, production mode, Postgres credentials, secure cookies).
-5. ~~First deploy.~~ Done (deployment 82377813). Before 1.0: create the single user on the server and register a passkey.
-6. Turn on database backups, and restore one, before real reading data goes in.
+5. ~~First deploy.~~ Done (deployment 82377813). Before 1.0: create the single user on the server and register a passkey ([#7](https://github.com/polarispixels/bathys/issues/7)), with a recovery path for a lost device ([#8](https://github.com/polarispixels/bathys/issues/8)).
+6. Turn on database backups, and restore one, before real reading data goes in ([#6](https://github.com/polarispixels/bathys/issues/6)).
 7. ~~`curl -s https://bathys.polarispixels.com/ | grep app-version`~~ prints `0.2.0`.

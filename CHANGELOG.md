@@ -9,6 +9,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 ### Added
 - Production: https://bathys.polarispixels.com on Forge (polished-monaco), zero-downtime deployments, Let's Encrypt for the domain and `www`, a read-only GitHub deploy key for Forge.
 - The Forge deploy script in the repository (`deploy/forge-deploy.sh`), including the step that shares `storage/` across releases.
+- Issue tracking: milestones for Phases 1 to 3, Bug and Idea issue forms, a triage routine (`docs/development.md`), and the known Phase 1 follow-ups filed as issues #6 to #11.
 - A CI `deploy` job: after the checks pass on `main`, it calls the Forge deploy hook and waits until the live version matches `package.json`. The secret is set, and the job was verified end to end.
 
 ### Changed
