@@ -89,10 +89,19 @@ Kept here, not in a skill, because it must run on every release. Details: [Versi
 
 ## Agents and models
 
-- **Top-level session (the most capable model):** brainstorming, design, plans, architecture, review of subagent output, the trickiest debugging, ship judgment.
-- **Sonnet subagents:** well-scoped implementation tasks from a precise brief, each with its own test loop.
-- **Haiku subagents:** mechanical work: searches, renames, doc-sync sweeps.
+Full routing, with reasons and costs: [`docs/ai-tooling.md`](docs/ai-tooling.md).
+
+- **Top-level session (Fable 5.1):** brainstorming, design, plans, architecture, contract review, ship judgment.
+- **Named subagents in `.claude/agents/`** carry their own model and effort. Dispatch plan work to them by name:
+  - `implementer` (Sonnet, medium): one plan task, test-first, committed. If it fails a task twice, escalate that task to an Opus subagent, not to Fable.
+  - `reviewer` (Opus, high, read-only): independent review of every branch.
+  - `security-reviewer` (Opus, high, read-only): any change touching auth, passkeys, secrets, external input, or the deploy pipeline.
+  - `scout` (Haiku, low, read-only): searches, doc-sync sweeps, log triage.
 - Work solo when delegating would cost more than it saves. If a session starts on a lesser model with architectural work ahead, say so early.
+- **Make targeted edits;** don't rewrite a whole file to change part of it.
+- **Batch independent reads, searches, and test runs** into one turn.
+- **Write the tests a change needs** and its important failure modes; no more.
+- **Ultracode stays off** unless Ryan includes the keyword for a specific task.
 
 ## Known traps
 
