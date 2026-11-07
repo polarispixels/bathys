@@ -20,6 +20,9 @@ final class Text
         $trimmed = preg_replace('/^\s+|\s+$/u', '', $text) ?? '';
         $collapsed = preg_replace('/\s+/u', ' ', $trimmed) ?? '';
 
-        return \Normalizer::normalize($collapsed, \Normalizer::FORM_C) ?: '';
+        // Compare with false, not truthiness: the string "0" is a valid value.
+        $normalized = \Normalizer::normalize($collapsed, \Normalizer::FORM_C);
+
+        return $normalized === false ? '' : $normalized;
     }
 }

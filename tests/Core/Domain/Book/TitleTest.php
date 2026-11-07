@@ -10,3 +10,4 @@ it('treats a non-breaking space as whitespace', fn () => expect(Title::fromStrin
 it('normalizes composed and decomposed accents to the same title', fn () => expect(Title::fromString("\u{00C9}conomie")->equals(Title::fromString("E\u{0301}conomie")))->toBeTrue());
 it('rejects a blank title', fn (string $blank) => Title::fromString($blank))->with(['', '   ', "\u{00A0}\u{00A0}"])->throws(InvalidTitle::class);
 it('compares titles exactly after normalization', fn () => expect(Title::fromString('Good to Great')->equals(Title::fromString('good to great')))->toBeFalse());
+it('accepts a title of "0" as a real title', fn () => expect(Title::fromString('0')->toString())->toBe('0'));
