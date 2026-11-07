@@ -38,7 +38,17 @@ The architecture is deliberately more structured than a typical Laravel app. Whe
 
 ## Status
 
-**Pre-code.** The product spec, architecture decisions, and working methods are written. The application has not been scaffolded yet. See [`docs/roadmap.md`](docs/roadmap.md).
+**v0.1.0, foundations.** The documents, the Laravel scaffold, and the architecture guards are in place; reading features start with the domain core. See [`docs/roadmap.md`](docs/roadmap.md).
+
+## Running it locally
+
+Requires PHP 8.4, Composer, Node 24, and Postgres.
+
+```bash
+composer setup     # install dependencies, create .env, migrate, build the frontend
+composer dev       # run the app at http://localhost:8000
+composer test      # formatting, static analysis, and the full test suite
+```
 
 ## Stack
 

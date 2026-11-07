@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Version
+    |--------------------------------------------------------------------------
+    |
+    | The SemVer release from package.json, its single source of truth. It is
+    | published in a meta tag so a deploy can be verified from outside:
+    | curl -s <url> | grep app-version
+    |
+    */
+
+    'version' => json_decode((string) file_get_contents(base_path('package.json')), true)['version'] ?? 'unknown',
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
