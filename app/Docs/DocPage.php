@@ -16,4 +16,50 @@ final readonly class DocPage
         public string $title,
         public string $group,
     ) {}
+
+    /**
+     * The first paragraph after the "# " heading, on one line, markdown left as is.
+     *
+     * Blocks that start with a heading, table, list, blockquote, rule, or code
+     * fence are skipped. Empty when the document has no such paragraph.
+     */
+    public function firstParagraph(): string
+    {
+        $lines = is_file($this->path) ? file($this->path, FILE_IGNORE_NEW_LINES) : false;
+        $seenTitle = false;
+        $inFence = false;
+        $block = [];
+
+        foreach (array_merge($lines ?: [], ['']) as $line) {
+            if (! $seenTitle) {
+                $seenTitle = str_starts_with($line, '# ');
+
+                continue;
+            }
+
+            if (str_starts_with(ltrim($line), '```')) {
+                $inFence = ! $inFence;
+                $block = [];
+
+                continue;
+            }
+
+            if ($inFence) {
+                continue;
+            }
+
+            if (trim($line) !== '') {
+                $block[] = trim($line);
+
+                continue;
+            }
+
+            if ($block !== [] && preg_match('/^(#|\||>|[-*+]\s|\d+[.)]\s|---|\*\*\*)/', $block[0]) !== 1) {
+                return implode(' ', $block);
+            }
+            $block = [];
+        }
+
+        return '';
+    }
 }

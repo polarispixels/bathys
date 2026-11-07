@@ -111,6 +111,7 @@ Full routing, with reasons and costs: [`docs/ai-tooling.md`](docs/ai-tooling.md)
 - **`boost:install` run non-interactively records no agents,** and `boost:update` then refuses to run. `boost.json` must list `"agents": ["claude_code"]`. The installer also writes a Windows-side `wsl.exe` command into `.mcp.json`; ours runs `php artisan boost:mcp` from the project root.
 - **The Laravel installer can write `APP_URL` with a doubled port** (`http://localhost:8000:8000`), which breaks every artisan command with "Host is malformed". Check `.env` after a fresh `composer setup`.
 - **A piped check can't stop a commit.** `composer ci:check | grep … | tail` exits 0 even when the check fails, and a chained `&& git commit` then commits broken code (this happened in v0.2.0; CI caught it). Gate commits on the check's own exit code: run it alone, or use `set -o pipefail`.
+- **A file in `docs/` is public the moment it merges.** The docs site at `/docs` renders the folder as is ([ADR-0011](docs/adr/0011-docs-site-rendered-from-the-repository.md)); anything not for strangers goes elsewhere.
 - **An architecture rule only counts if it has failed.** When adding an `arch()` rule over an empty namespace, plant a violation once to see it fail.
 
 ## Keeping this file healthy

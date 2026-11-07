@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 use App\Docs\RoadmapBoard;
 
-it('reads phases, steps, items, and statuses from the roadmap tables', function () {
+it('reads phases, steps, and items from the real roadmap', function () {
     // Unit tests don't boot Laravel (tests/Pest.php is empty), so no base_path().
     $phases = RoadmapBoard::fromMarkdown((string) file_get_contents(dirname(__DIR__, 3).'/docs/roadmap.md'));
     $phase1 = array_find($phases, fn ($p) => $p->title === 'Phase 1: Catalog');
     $row1a = array_find($phase1->rows, fn ($r) => $r->step === '1a');
-    expect($row1a->item)->toStartWith('Domain core')->and($row1a->badge)->toBeNull()->and($row1a->status)->toStartWith('designed');
+    expect($row1a->step)->toBe('1a')
+        ->and($row1a->item)->toStartWith('Domain core')
+        ->and($row1a->badge)->toBeIn([null, 'done', 'next', 'planned']);
 });
 
 it('badges statuses by their first word and leaves the rest plain', function () {

@@ -49,3 +49,18 @@ it('shows the live version, its release date, and the roadmap on the front page'
         ->assertSee('Phase 1: Catalog')
         ->assertSee('Domain core');
 });
+
+it('publishes llms.txt with a markdown link for every page', function () {
+    $response = $this->get('/llms.txt')->assertOk()->assertHeader('Content-Type', 'text/plain; charset=utf-8');
+    $base = rtrim((string) config('app.url'), '/');
+    $body = (string) $response->getContent();
+
+    expect($body)->toStartWith("# Bathys\n\n> ")
+        ->toContain("- [Start here]({$base}/docs/index.md): ");
+    foreach ((new DocsCatalog(base_path()))->all() as $page) {
+        expect($body)->toContain("({$base}/docs/{$page->slug}.md)");
+    }
+    if ($base !== 'http://localhost') {
+        expect($body)->not->toContain('http://localhost/docs/');
+    }
+});

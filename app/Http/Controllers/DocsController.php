@@ -60,6 +60,45 @@ final class DocsController
         return $this->markdownResponse($this->catalog->front());
     }
 
+    /**
+     * A plain-text map of the docs for language models (llmstxt.org): one
+     * summary line and one link to the markdown source per page.
+     */
+    public function llms(): Response
+    {
+        $base = rtrim((string) config('app.url'), '/');
+        $line = fn (DocPage $page, string $title, string $slug): string => sprintf(
+            '- [%s](%s/docs/%s.md): %s',
+            $title,
+            $base,
+            $slug === '' ? 'index' : $slug,
+            mb_substr($page->firstParagraph(), 0, 160),
+        );
+
+        $front = $this->catalog->front();
+        $lines = ['# Bathys', '', '> '.$front->firstParagraph()];
+        $groups = $this->catalog->groups();
+
+        $frontLine = $line($front, 'Start here', '');
+
+        if (! isset($groups['Start here'])) {
+            array_push($lines, '', '## Start here', $frontLine);
+        }
+
+        foreach ($groups as $group => $pages) {
+            $lines[] = '';
+            $lines[] = '## '.$group;
+            if ($group === 'Start here') {
+                $lines[] = $frontLine;
+            }
+            foreach ($pages as $page) {
+                $lines[] = $line($page, $page->title, $page->slug);
+            }
+        }
+
+        return response(implode("\n", $lines)."\n", 200, ['Content-Type' => 'text/plain; charset=utf-8']);
+    }
+
     private function find(string $slug): DocPage
     {
         return $this->catalog->find($slug) ?? abort(404);

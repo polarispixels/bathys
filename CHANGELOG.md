@@ -7,6 +7,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 ## [Unreleased]
 
 ### Added
+- `/llms.txt`, a plain-text map of the documentation for language models, and pointers to the docs site in the README, CLAUDE.md, and the development guide.
 - A self-updating "Where things stand" block on the docs front page, built from the changelog and the roadmap tables on every request.
 - The documentation site at `/docs`: every repository document rendered as a public page with a sidebar, each also served as raw markdown at `/docs/<slug>.md`, styled with `@tailwindcss/typography`.
 - `App\Docs\MarkdownRenderer`, which renders documentation markdown with GitHub-style heading ids, stripped raw HTML, and relative links rewritten to site pages or GitHub.
