@@ -1,8 +1,8 @@
 # Bathys: Product Spec
 
 **Document Type:** Project Spec
-**Status:** DRAFT (open questions resolved; ready for design and implementation planning)
-**Version:** 0.3
+**Status:** DRAFT (re-scoped to a catalog; ready for design and implementation planning)
+**Version:** 0.4
 **Last Updated:** November 7, 2026
 **Owner:** Ryan Grissinger
 **Related:** [Architecture Decision Records](adr/README.md)
@@ -11,7 +11,7 @@
 
 ## Name
 
-**Bathys** (Greek *βαθύς*, "deep"). The name says what the tool measures: how deep you have gone into a book, not whether you finished it.
+**Bathys** (Greek *βαθύς*, "deep"). Each book carries one rating: how deep Ryan has read it.
 
 The project was first written up under the placeholder name "Reading Tracker" (v0.1).
 
@@ -19,11 +19,18 @@ The project was first written up under the placeholder name "Reading Tracker" (v
 
 ## Intent
 
-Ryan owns, wants, or has partly read a large and growing set of books. Long reading sessions rarely work for him: his mind wanders, he falls asleep, and finishing a book cover to cover is rare. Standard trackers measure "books finished," so they score most of his reading as failure.
+In Ryan's words (November 7, 2026): "I just want a list of books that are on my bookshelf and a list of the books that I am interested in adding to my collection. We can categorize them."
 
-Bathys measures **depth reached**, not completion. It borrows the four levels from Mortimer Adler's *How to Read a Book* (elementary, inspectional, analytical, syntopical) and turns them into a progressive ladder. Every book on the shelf can get a 5 to 15 minute inspectional pass. The tool then helps him decide which books have earned a deeper read, and how books relate to each other on the questions he cares about.
+Bathys is a **personal book catalog**:
 
-The tool is mostly private. It is its own project, separate from polarispixels.com. A public "recommended reading" page could come later, fed from this data, but it is not part of this spec.
+- **The shelf:** the books Ryan owns.
+- **The wishlist:** the books he wants.
+- **Categories** he defines and edits himself.
+- **One rating per book:** how deep he has read it, on Mortimer Adler's levels of reading, set directly on the book.
+
+It is not a reading tool or a reading assistant. Earlier versions of this spec (v0.1 to v0.3) described one, with timed sessions, guided checklists, and recorded passes. Those ideas are kept under [Later](#later) so they aren't re-proposed as new.
+
+The tool is private. It is its own project, separate from polarispixels.com.
 
 Bathys has a second purpose: it is a **teaching codebase**. The repository is meant to be a clear, readable example of software architecture done well, which a new programmer can study. See [the ADR index](adr/README.md) for the reasoning behind the technical choices.
 
@@ -31,197 +38,109 @@ Bathys has a second purpose: it is a **teaching codebase**. The repository is me
 
 ## Goals
 
-1. Track every book Ryan owns, wants, or has touched, with ownership status and format.
-2. Track reading depth per book on an Adler-based ladder, with partial analytical progress recorded by chapter or section.
-3. Make short sessions the default unit of work, and make each one count.
-4. Capture a few structured notes at the end of each pass (the digital version of underlining) so the tool has something to prioritize with.
-5. Describe each book with independent **facets**: category, genre, reading level, depth, breadth, plus relationships to other books.
-6. Suggest what to read next and at what depth.
-7. Help discover related material and research reviews (mostly through Claude via MCP).
-8. Provide simple purchase or borrow links (Amazon, Half Price Books, others).
+1. List every book on Ryan's shelf, and every book he wants.
+2. Move a book from the wishlist to the shelf when he gets it.
+3. Group books by categories he can add, rename, and remove.
+4. Record how deep he has read each book, as one level from 0 to 5.
+5. Make adding a book take seconds: by hand, by title search, or by scanning its barcode.
+6. Find a book quickly by title, author, category, status, or depth.
 
 ## Non-Goals
 
+- Reading-tool features: timed sessions, checklists, recorded passes, prioritization (see [Later](#later)).
 - Social features, friends, public profiles, Goodreads-style feeds.
 - Reading the books inside the app (no ebook reader).
-- A public recommended-reading page (possible later phase).
-- Integrations with StoryBank, COMPASS, or workshop and consulting topics in v1 (nice-to-have, later phase; see [Later Phases](#later-phases)).
+- A public recommended-reading page (possible later; see [Later](#later)).
 
 ## Anti-Goals (failure even if it technically works)
 
-- Anything that makes not finishing a book feel like failure. No "books completed" counter as a headline metric, no streak guilt.
-- Heavy data entry before reading can start. Adding a book must take seconds.
+- Heavy data entry. **Adding a book must take seconds.** Title is the only required field.
 - A tool that becomes a procrastination project in itself (organizing instead of reading).
+- Anything that makes an unread book feel like a failure. Depth 0 is a normal state for a book on the shelf.
 
 ---
 
 ## Where It Is Used
 
-Bathys is used in four places, and each one shapes a different part of the interface:
-
 | Where | Device | What happens there |
 |---|---|---|
-| At the bookshelf | Phone | Adding books (shelf photo, barcode scan), starting a quick inspection |
-| In bed | Phone | Sessions, often in low light, often short |
-| At a desk | Desktop | Shelf management, facets, relationships, reviewing notes |
-| On the couch | Tablet | Sessions and light shelf browsing |
+| At the bookshelf or in a bookstore | Phone | Adding books (barcode scan, title search), checking whether a book is already owned or wanted |
+| At a desk | Desktop | Managing categories, editing several books, browsing |
+| On the couch | Tablet or phone | Browsing the shelf and wishlist, updating depth |
 
-Design consequences:
+**Adding a book and browsing are mobile-first.** Category management can lean on desktop but must still work on a phone.
 
-- **The session screen is mobile-first.** It is designed for a phone held in one hand, then scaled up.
-- **Shelf management can lean on desktop.** Bulk editing, facet management, and relationship work may assume a larger screen, but must still work on a phone.
-- **Capture happens on the device in hand.** The end-of-session form must be fast to complete on a phone.
+---
+
+## The Book
+
+| Field | Required | Notes |
+|---|---|---|
+| Title | Yes | The only required field, so a hand-typed book takes seconds |
+| Authors | No | One or more |
+| ISBN | No | ISBN-10 or ISBN-13, validated and normalized; filled in by title search or barcode scan |
+| Cover | No | An image URL, usually from the metadata lookup |
+| Status | Yes | **On the shelf** or **Wanted**. Defaults to on the shelf. |
+| Categories | No | Zero or more, from Ryan's editable list |
+| Depth | Yes | Level 0 to 5 (below). Defaults to 0. |
+
+**Categories** are an editable list, never hardcoded. Ryan can add, rename, and remove them. Removing a category takes it off its books; it never removes the books.
+
+**Moving a book** from Wanted to On the shelf keeps everything else about it.
+
+---
+
+## Depth
+
+Each book has one **depth**: how deep Ryan has read it, on the levels from Mortimer Adler's *How to Read a Book*. It is the book's only rating.
+
+| Level | Name | What it means |
+|---|---|---|
+| 0 | Not yet read | Known to the catalog, not yet touched |
+| 1 | Inspected: skim | Adler's systematic skim: title, preface, contents, index, a few key chapters, the last pages |
+| 2 | Inspected: superficial read | Read straight through without stopping on hard parts |
+| 3 | Analytical (partial) | Careful reading of part of the book |
+| 4 | Analytical (complete) | Careful reading of the whole book |
+| 5 | Syntopical | Compared with other books on a shared question |
+
+Rules:
+
+- **Set directly.** Ryan picks the level on the book. There is no history of reading events behind it.
+- **Any level, any time.** Real reading doesn't climb in order: he might read one chapter carefully before ever skimming a book. Any level can be set at any time, higher or lower.
+- **Not tracked by section.** Level 3 is "careful reading of part of the book"; which part isn't recorded.
+- **Any status.** A wanted book can have a depth too, for example one read from a library.
+- **Format doesn't change it.** Physical, ebook, and audio books all use the same levels.
 
 ---
 
 ## Adding Books
 
-Adding a book must take seconds. Bathys supports four ways in:
+Adding a book must take seconds. Version 1 has three ways in:
 
-1. **Shelf photo.** Photograph a shelf; AI vision reads the spines and proposes books. Ryan confirms or corrects the list before anything is added. This is the expected **first import**.
-2. **ISBN barcode scan.** Use the phone camera to scan a barcode; metadata is looked up by ISBN.
-3. **Title search.** Type part of a title or author; pick from metadata search results.
-4. **Through Claude via MCP.** "Add *Thinking in Systems* to my shelf, I own the paperback." (See [Discovery, Reviews, and Purchasing](#discovery-reviews-and-purchasing).)
+1. **By hand.** Type a title (and optionally authors). Nothing else is required.
+2. **Title search.** Type part of a title or author, pick a result, and the authors, ISBN, and cover fill in.
+3. **ISBN barcode scan.** Scan the barcode with the phone camera; the book's details are looked up by ISBN.
 
-**Starting inventory:** there is no existing list to import (no Goodreads, Kindle library, or spreadsheet). The shelf starts empty and shelf photos fill it.
+Book metadata comes from a public source, Open Library first, behind a port so the source can change ([ADR-0002](adr/0002-put-portability-where-change-is-likely.md)).
 
----
+Adding books **through Claude by conversation** comes in Phase 2, with the MCP server. **Shelf-photo import** is deferred ([Later](#later)).
 
-## The Depth Ladder
-
-Each book has one **depth**: the deepest level of reading ever recorded for it.
-
-| Level | Name | What it means | Typical time |
-|---|---|---|---|
-| 0 | Shelved | Known to the system, not yet touched | 0 |
-| 1 | Inspected: skim | Adler's systematic skimming: title, subtitle, preface, table of contents, index, jacket copy, a few pivotal chapters, the last pages | 5 to 15 min |
-| 2 | Inspected: superficial read | Read straight through without stopping to puzzle over hard parts | Hours, spread over sessions |
-| 3 | Analytical (partial) | Careful read of selected chapters or sections | Per section |
-| 4 | Analytical (complete) | Careful read of the whole book | Many sessions |
-| 5 | Syntopical | Book has been used in a comparison with other books on a shared question | Per question |
-
-Level 1 is the most important. A full shelf at level 1 is a real accomplishment and the main early win.
-
-Analytical progress is tracked per chapter or section, so "read chapters 2, 5 and 7 carefully" is a first-class state, not "partially read."
-
-### Any level, any time, after the fact
-
-Real reading does not climb the ladder in order. Ryan might read one chapter carefully before ever skimming the book, flip through the index of a book he finished years ago, or mention on Tuesday what he read on Sunday night. Bathys records what happened. It does not enforce an order.
-
-- **Any level can be recorded for any book at any time**, including levels above the book's current depth and readings that happened in the past.
-- **Depth is a high-water mark.** A book's depth is the highest level among its recorded passes (see [Passes and Sessions](#passes-and-sessions)). Reading at a shallower level later never lowers it.
-- **Lower levels are not assumed.** Recording level 3 does not invent a level 1 pass. The history shows exactly what was reported.
-- **Mistakes are cheap to fix.** Editing or deleting a pass recalculates the book's depth.
-
-**Format does not change the ladder.** Physical books, ebooks, and audiobooks all climb the same ladder in the same way. Format is a facet of a book, not a different kind of reading. (A level 1 skim of an audiobook will look different in practice, for example listening to the introduction and the final chapter, but it is still level 1.)
-
----
-
-## Passes and Sessions
-
-A **pass** is a record that some reading happened: one book, one level, when it happened, and optionally which sections were covered and a capture (below). Passes are the only thing that sets a book's depth.
-
-There are two ways to record a pass:
-
-1. **Report it after the fact.** Pick a book, a level, and when it happened (defaults to today); optionally add sections and a capture. This must take seconds.
-2. **Run a live session.** A session is a short, timed block (default 10 minutes, adjustable) against one book at one level. Finishing a session records a pass. An abandoned session records nothing, and nothing is lost by abandoning one.
-
-Each level gets a guided checklist for live sessions. The level 1 checklist walks through Adler's skimming steps one at a time so a wandering mind has a next step to return to.
-
-Whichever way a pass is recorded, a short capture form asks for:
-
-- What kind of book is this? (practical or theoretical, subject)
-- What is it about, in one sentence?
-- How is it structured? (major parts)
-- What problem is the author trying to solve?
-- Verdict: **go deeper**, **park it**, or **let it go**.
-- Optional free-form notes and quotes (with page numbers).
-
-Fields should be optional and fast. A pass with only a level and a verdict still counts.
-
-### Focus Aids
-
-The session screen helps a wandering mind come back. These are the defaults:
-
-| Aid | Behavior |
-|---|---|
-| End-of-session chime | A gentle chime when the timer ends. No alarm, no countdown pressure. |
-| One step at a time | The checklist shows only the current step, with the rest collapsed. |
-| "Where was I" prompt | Reopening the app during or after an unfinished session shows the book, the level, and the step you were on, with one tap to resume. |
-| Dim / low-light mode | A dark, low-brightness theme for reading in bed. |
-
-Read-aloud was considered and is not a default.
-
----
-
-## Facets
-
-Facets are independent tags. A book can carry several values per facet where it makes sense.
-
-| Facet | Notes |
-|---|---|
-| Category | Broad subject (business, technology, history, philosophy, etc.) |
-| Genre | Form (practitioner guide, memoir, textbook, narrative nonfiction, fiction, etc.) |
-| Reading level | Difficulty of the prose and ideas |
-| Depth | How deep the book goes into its subject |
-| Breadth | How wide a range of subjects it covers |
-| Ownership | Own physical, own ebook, own audiobook, library, borrowed, don't own, wishlist |
-| Format | Physical, ebook (Kindle, PDF, EPUB), audio |
-| Source | How it reached the list (recommended by a person, cited in another book, podcast, etc.) |
-
-Category and genre values should be editable lists, not hardcoded.
-
-Format groups into three families (physical, ebook, audio). The families matter for display and filtering; none of them affects the depth ladder.
-
----
-
-## Relationships Between Books
-
-Two kinds of relationships:
-
-1. **Book to book links**, with a type: responds to, builds on, prerequisite for, contradicts, cited by, recommended in.
-2. **Questions** (syntopical topics). A question is something Ryan wants to understand, such as "How do small companies build durable operations?" Books attach to questions. Once two or more books on a question reach level 1, the tool can suggest a syntopical comparison.
-
-Questions are the bridge between the shelf and Ryan's actual work (consulting, writing, the workshop).
-
----
-
-## Prioritization
-
-The tool suggests the next session. Initial heuristics (to refine in use):
-
-- Books at level 0 that Ryan owns come first, because inspection is cheap and owned books need no purchase.
-- Books marked **go deeper** move up for level 2 or 3 work.
-- Questions with several inspected books surface as syntopical candidates.
-- Manual pinning and a simple priority field override the heuristics.
-
----
-
-## Discovery, Reviews, and Purchasing
-
-These lean on Claude through an MCP server rather than custom in-app research pipelines.
-
-- **Add by conversation:** "Add *Thinking in Systems* to my shelf, I own the paperback." Claude looks up metadata (ISBN, author, page count, cover) and creates the record.
-- **Review research:** Claude summarizes critical reception and stores a short review summary on the book.
-- **Discovery:** Claude suggests related books for a book or a question, added as wishlist items with a source noted.
-- **Purchase and borrow links:** generated from ISBN or title for Amazon, Half Price Books, and other retailers (Bookshop.org and a library or Libby lookup are candidates). Exact URL formats need verification during the build.
-
-Book metadata lookup should use a public source such as Open Library or Google Books by ISBN.
+**Starting inventory:** there is nothing to import. The shelf starts empty.
 
 ---
 
 ## Architecture and Stack
 
-The stack is confirmed (it was Claude's unconfirmed proposal in v0.1). The reasoning for each choice is recorded as an Architecture Decision Record in [`docs/adr/`](adr/README.md).
+The reasoning for each choice is recorded as an Architecture Decision Record in [`docs/adr/`](adr/README.md).
 
 **Stack**
 
-- **Backend:** Laravel 13 on PHP 8.3+ ([ADR-0001](adr/0001-stay-on-laravel-13.md))
+- **Backend:** Laravel 13 on PHP 8.4 ([ADR-0001](adr/0001-stay-on-laravel-13.md))
 - **Database:** Postgres
-- **Frontend:** Inertia with React and TypeScript, styled with Tailwind ([ADR-0006](adr/0006-react-with-typescript-through-inertia.md)). This replaces Alpine from the v0.1 proposal.
-- **Hosting:** Laravel Forge, matching polaris-pixels and indigo-nebula
-- **Authentication:** single user (Ryan), passkey sign-in
-- **Developer tooling:** Laravel Boost, for AI-assisted development
+- **Frontend:** Inertia with React and TypeScript, styled with Tailwind ([ADR-0006](adr/0006-react-with-typescript-through-inertia.md))
+- **Hosting:** Laravel Forge at `bathys.polarispixels.com` ([ADR-0010](adr/0010-host-on-a-polarispixels-subdomain.md))
+- **Authentication:** single user (Ryan), passkey sign-in, no public registration
+- **Developer tooling:** Laravel Boost, and the tools in [`docs/ai-tooling.md`](ai-tooling.md)
 
 **Architecture**
 
@@ -229,64 +148,85 @@ The stack is confirmed (it was Claude's unconfirmed proposal in v0.1). The reaso
 - **Eloquent behind repository interfaces**: domain rules in plain PHP classes, persistence in adapters ([ADR-0004](adr/0004-pragmatic-persistence.md)).
 - **JSON:API endpoints described by an OpenAPI contract written before the code**, with tests that verify the application matches it ([ADR-0005](adr/0005-spec-driven-design-with-an-api-contract.md)).
 - **Repository layout:** the domain core lives in `core/` beside Laravel's `app/`, and every file in `app/` is an adapter ([ADR-0007](adr/0007-core-beside-app-repository-layout.md)).
-- **The web UI shares the API contract:** Inertia pages receive data serialized by the same JSON:API resources, and TypeScript types are generated from the OpenAPI document ([ADR-0008](adr/0008-web-ui-shares-the-api-contract.md)).
-- **An MCP server** so Claude can add books, research reviews, and suggest related reading. It runs inside the Laravel app as a driving adapter that calls the same use cases as the web and API, and it keeps the dual-transport approach (stdio and Streamable HTTP) of `polaris-pixels/mcp-server/` and `indigo-nebula/mcp-server/` ([ADR-0009](adr/0009-mcp-server-inside-laravel.md)).
-
-The app stays simple: the shelf, the ladder, sessions, notes, facets, and relationships. Claude does the research work through MCP.
+- **The web UI shares the API contract** ([ADR-0008](adr/0008-web-ui-shares-the-api-contract.md)).
+- **An MCP server** (Phase 2) so Claude can add and update books by conversation. It runs inside the Laravel app as a driving adapter ([ADR-0009](adr/0009-mcp-server-inside-laravel.md)).
 
 ---
 
 ## Rough Data Model (sketch for the builder)
 
-This is a persistence sketch. Under the hexagonal architecture the domain model is designed first, in plain PHP, and the tables follow from it, so names and shapes here may change.
+A persistence sketch. The domain model is designed first, in plain PHP, and the tables follow from it, so names may change.
 
-- **books**: title, subtitle, authors, ISBN, cover, page count, publication year, description, priority, verdict, review summary. (Depth is derived from passes; if it is stored here, it is only a cached copy.)
-- **book_copies** or ownership fields: ownership status and format (a book can be owned in more than one format)
-- **sections**: chapters or parts per book
-- **passes**: book, level, occurred on (when the reading happened), recorded at (when it was entered), sections covered, capture fields, notes, verdict, and the session it came from, if any
-- **reading_sessions**: book, level, started at, planned duration, current checklist step, ended at. (Named `reading_sessions`, not `sessions`, because Laravel uses a `sessions` table for HTTP sessions.)
-- **facets** and **facet_values**, with a pivot to books
-- **book_links**: from book, to book, link type
-- **questions**, with a pivot to books
-- **links**: retailer or library URLs per book
+- **books**: title, authors, ISBN, cover URL, status (`shelf` or `wanted`), depth (0 to 5), timestamps
+- **categories**: name (unique)
+- **book_category**: the pivot between them
 
 ---
 
 ## Suggested Phasing
 
-1. **Shelf and ladder.** Add books fast (title search with metadata lookup, ISBN barcode scan, and shelf-photo import last), set ownership and facets, report passes at any level after the fact, run timed level 1 sessions with the skimming checklist and focus aids, capture notes and verdicts, see a "next up" list.
-2. **MCP and research.** MCP server, add by conversation, review summaries.
-3. **Relationships and discovery.** Questions, book links, syntopical suggestions, related-book discovery, purchase and borrow links.
+1. **Catalog.** Add books by hand, by title search, and by barcode scan; the shelf and the wishlist; categories; depth; finding books. Ends with 1.0.0 in daily use.
+2. **MCP.** An MCP server inside the app, so Claude can add and update books by conversation.
 
-### Later Phases
+Everything else is in [Later](#later).
 
-Not scheduled; recorded so they are not forgotten.
+---
 
-- **Kindle highlight import** as notes on a book.
-- **Integrations** with StoryBank and COMPASS (notes and quotes flowing out), and mapping questions to workshop or consulting topics.
-- **Public recommended-reading page** fed from Bathys data.
-- **Native phone app**, consuming the same API contract.
+## Later
+
+Not scheduled. Recorded so they aren't re-proposed as new. Each would need Ryan's decision and a spec update before work starts.
+
+**From the reading-tool design (v0.1 to v0.3):**
+
+- **Passes:** records of individual reading events, with depth derived from them
+- **Live reading sessions:** a timed block against one book at one level
+- **Guided checklists** per level (for example, Adler's skimming steps one at a time)
+- **Focus aids:** an end-of-session chime, one step at a time, a "where was I" prompt, dim mode
+- **Captures and verdicts:** end-of-session notes, and "go deeper / park it / let it go"
+- **Sections:** chapters tracked per book. Ryan never intended this (see the Decisions Log, row 16).
+- **A next-up picker** that suggests what to read next
+- **Facets beyond category:** genre, reading level, subject depth and breadth, ownership and format, source
+- **Book relationships:** links such as "responds to", "builds on", "contradicts"
+- **Questions and syntopical work:** books attached to questions Ryan wants to understand, with suggested comparisons
+
+**Research and buying:**
+
+- **Review summaries** written by Claude through MCP
+- **Related-book discovery** that adds wishlist items with a noted source
+- **Purchase and borrow links** (Amazon, Half Price Books, Bookshop.org, a library or Libby lookup)
+
+**Ways in and integrations:**
+
+- **Shelf-photo import** (AI vision reads the spines), which would need an AI provider ADR and a queue worker ([#9](https://github.com/polarispixels/bathys/issues/9))
+- **Kindle highlight import**
+- **StoryBank and COMPASS integrations**, and mapping questions to workshop or consulting topics
+- **A public recommended-reading page** fed from Bathys data
+- **A native phone app**, consuming the same API contract
 
 ---
 
 ## Decisions Log
 
-All questions below were answered on November 7, 2026. Questions 1 to 8 come from v0.1; 9 to 12 came up in review of v0.2.
+Questions 1 to 8 come from v0.1, 9 to 12 from review of v0.2, and 13 to 16 from the re-scope. All were answered on November 7, 2026. Rows marked *superseded* record what was decided at the time; the row named in the decision replaces them.
 
-| # | Question (v0.1) | Decision |
+| # | Question | Decision |
 |---|---|---|
-| 1 | Where and how is it used? | Phone at the bookshelf, phone in bed, desktop, and tablet. Session screen is mobile-first; shelf management can lean on desktop. See [Where It Is Used](#where-it-is-used). |
-| 2 | How do books get in? | All four: shelf photo read by AI vision, ISBN barcode scan, title search, and adding via Claude through MCP. See [Adding Books](#adding-books). |
-| 3 | Starting inventory? | Nothing to import. Shelf photos will be the first import. |
-| 4 | Audiobooks and Kindle? | Physical, ebook, and audio all climb the same ladder; format is just a facet. Kindle highlight import is a later phase. |
-| 5 | Focus aids? | Gentle end-of-session chime, one checklist step at a time, "where was I" prompt on reopen, and dim/low-light mode. See [Focus Aids](#focus-aids). |
-| 6 | Connection to existing systems? | StoryBank, COMPASS, and work-topic integrations are nice-to-have, later phase, not v1. |
-| 7 | Name and domain? | Name: **Bathys**. Domain: **`bathys.polarispixels.com`** (decided November 7, 2026; [ADR-0010](adr/0010-host-on-a-polarispixels-subdomain.md)). |
-| 8 | Stack confirmation? | Confirmed, with changes: Laravel 13, Postgres, Inertia with React and TypeScript, Tailwind, Forge, passkey auth, hexagonal architecture, JSON:API with an OpenAPI contract, MCP server, Laravel Boost. See [Architecture and Stack](#architecture-and-stack). |
-| 9 | Must books climb the ladder in order? | No. Any level can be recorded at any time, after the fact; depth is the highest level recorded. See [Any level, any time, after the fact](#any-level-any-time-after-the-fact). |
-| 10 | When does shelf-photo import ship? | End of Phase 1, after title search and barcode scan, since it is the expected first import. |
-| 11 | Does the Inertia web UI use the API contract? | Yes, through shared JSON:API resources and generated TypeScript types. [ADR-0008](adr/0008-web-ui-shares-the-api-contract.md). |
-| 12 | Where does the MCP server live? | Inside the Laravel app, as a driving adapter. [ADR-0009](adr/0009-mcp-server-inside-laravel.md). |
+| 1 | Where and how is it used? | *Superseded by 13 for the session screen.* Phone at the bookshelf, desktop, and tablet; adding and browsing are mobile-first. See [Where It Is Used](#where-it-is-used). |
+| 2 | How do books get in? | *Superseded by 15.* Originally all four: shelf photo, ISBN barcode scan, title search, and Claude through MCP. |
+| 3 | Starting inventory? | Nothing to import. (Originally "shelf photos will be the first import"; shelf photos are now deferred, see 15.) |
+| 4 | Audiobooks and Kindle? | Physical, ebook, and audio books use the same depth levels. Kindle highlight import is Later. |
+| 5 | Focus aids? | *Superseded by 13.* Originally a chime, one checklist step at a time, a "where was I" prompt, and dim mode; all Later. |
+| 6 | Connection to existing systems? | StoryBank, COMPASS, and work-topic integrations are Later. |
+| 7 | Name and domain? | Name: **Bathys**. Domain: **`bathys.polarispixels.com`** ([ADR-0010](adr/0010-host-on-a-polarispixels-subdomain.md)). |
+| 8 | Stack confirmation? | Laravel 13, Postgres, Inertia with React and TypeScript, Tailwind, Forge, passkey auth, hexagonal architecture, JSON:API with an OpenAPI contract, MCP server, Laravel Boost. See [Architecture and Stack](#architecture-and-stack). |
+| 9 | Must books climb the ladder in order? | No. Any level, any time. Still true under 14, without passes: the level is set directly. |
+| 10 | When does shelf-photo import ship? | *Superseded by 15.* Deferred to Later. |
+| 11 | Does the Inertia web UI use the API contract? | Yes, through shared JSON:API resources and generated TypeScript types ([ADR-0008](adr/0008-web-ui-shares-the-api-contract.md)). |
+| 12 | Where does the MCP server live? | Inside the Laravel app, as a driving adapter ([ADR-0009](adr/0009-mcp-server-inside-laravel.md)). |
+| 13 | What is Bathys? | **A personal book catalog, not a reading tool:** the shelf, the wishlist, categories, and one rating per book. In Ryan's words: "I just want a list of books that are on my bookshelf and a list of the books that I am interested in adding to my collection. We can categorize them." Reading-tool features move to [Later](#later). |
+| 14 | What does a book's one rating measure? | **How deep Ryan has read it:** the Adler depth level, 0 to 5, set directly on the book. See [Depth](#depth). |
+| 15 | Which ways of adding a book are in version 1? | **By hand, title search, and ISBN barcode scan.** Shelf-photo import is Later; adding through Claude comes with the MCP server in Phase 2. |
+| 16 | Can covering every section raise a book's level? | **No, and books are not tracked by section at all.** Ryan never intended to break books into sections, so the question is moot. |
 
 ## Open Questions
 
@@ -296,26 +236,30 @@ None at the moment. New questions are added here as they come up.
 
 ## Next Step
 
-Scaffold the Laravel app per [ADR-0007](adr/0007-core-beside-app-repository-layout.md), build the domain core test-first, then write the first version of the OpenAPI contract and review it before any endpoint code.
+Phase 1, step 1a: the domain core (Book, Status, Category, Depth, and their value objects), test-first. See [`roadmap.md`](roadmap.md).
 
 ---
 
 ## Version History
 
+**v0.4 (November 7, 2026)**
+- Re-scoped from a reading tool to a personal book catalog (Decisions Log 13 to 16): the shelf, the wishlist, editable categories, and one rating per book, the Adler depth level set directly.
+- Removed passes, live sessions, checklists, focus aids, captures and verdicts, sections, the next-up picker, facets beyond category, relationships, questions, syntopical work, review summaries, discovery, purchase links, and shelf-photo import from version 1. All are listed under Later.
+- Version 1 adds books by hand, by title search, and by ISBN barcode scan.
+- New sections: The Book, Depth, Later. Rewritten: Intent, Goals, Non-Goals, Anti-Goals, Where It Is Used, Adding Books, Rough Data Model, Suggested Phasing. PHP 8.3+ corrected to 8.4.
+
 **v0.3 (November 7, 2026)**
-- Ladder rule changed after review: any level can be recorded at any time, after the fact. "Levels are cumulative" replaced by "depth is the highest level recorded." New subsection: Any level, any time, after the fact.
-- Introduced the **pass** (a record that reading happened) as distinct from the **session** (a live, timed tool that records a pass). "Sessions" section renamed to "Passes and Sessions." Data model gains a `passes` table; depth is derived from passes.
+- Ladder rule changed after review: any level can be recorded at any time, after the fact.
+- Introduced the **pass** as distinct from the **session**; depth derived from passes.
 - Shelf-photo import, title search, and metadata lookup moved into Phase 1.
-- Recorded decisions on repository layout, the web UI and the API contract, and MCP placement (ADR-0007 to ADR-0009). Open question on shelf-photo timing resolved.
+- Recorded decisions on repository layout, the web UI and the API contract, and MCP placement (ADR-0007 to ADR-0009).
 
 **v0.2 (November 7, 2026)**
 - Renamed from "Reading Tracker" to **Bathys**.
-- Recorded answers to all v0.1 open questions in a Decisions Log; removed the resolved questions. Domain name and the timing of shelf-photo import remain open.
+- Recorded answers to all v0.1 open questions in a Decisions Log.
 - Added sections: Where It Is Used, Adding Books, Focus Aids, Architecture and Stack, Later Phases.
-- Confirmed the stack (Laravel 13, Postgres, Inertia + React + TypeScript, Tailwind, Forge, passkeys, Laravel Boost) and the hexagonal architecture; linked to ADR-0001 through ADR-0006. Alpine dropped in favor of React.
+- Confirmed the stack and the hexagonal architecture; linked to ADR-0001 through ADR-0006.
 - Noted the teaching-codebase purpose in Intent.
-- Clarified that format does not affect the depth ladder, and grouped formats into physical, ebook, and audio.
-- Renamed the `sessions` table to `reading_sessions` in the data model sketch to avoid a clash with Laravel's HTTP session table.
 
 **v0.1 (November 7, 2026)**
-- Preliminary spec captured from a brainstorming session in Claude Code. Intent, depth ladder, facets, and phasing agreed in conversation. Stack and data model are Claude's proposals pending Ryan's review.
+- Preliminary spec captured from a brainstorming session in Claude Code. Intent, depth ladder, facets, and phasing agreed in conversation.

@@ -12,8 +12,8 @@ export default function ComingSoon() {
                     Greek for “deep”
                 </p>
                 <p className="mt-8 max-w-md text-lg text-pretty">
-                    A reading tool that measures how deep you have gone into a
-                    book, not how many books you have finished.
+                    A personal catalog of the books on the shelf and the books
+                    wanted, with how deep each one has been read.
                 </p>
                 <p className="mt-10 text-sm text-muted-foreground">
                     Coming soon.

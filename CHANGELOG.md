@@ -6,6 +6,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+### Changed
+- **Re-scoped from a reading tool to a personal book catalog** (spec v0.4): the shelf, the wishlist, editable categories, and one rating per book, the Adler depth level (0 to 5) set directly. Version 1 adds books by hand, by title search, and by ISBN barcode scan. Passes, sessions, checklists, focus aids, captures, sections, the next-up picker, extra facets, relationships, syntopical work, review summaries, discovery, purchase links, and shelf-photo import moved to the spec's Later section.
+- Roadmap Phase 1 re-planned for the catalog; Phase 3 folded into Later; GitHub milestones renamed (Phase 1: Catalog, Phase 2: MCP, Later), and the queue-worker issue (#9) moved to Later.
+- README, CLAUDE.md, the deployment doc, the coming-soon page, and the GitHub repository description now describe the catalog.
+
 ### Added
 - Production: https://bathys.polarispixels.com on Forge (polished-monaco), zero-downtime deployments, Let's Encrypt for the domain and `www`, a read-only GitHub deploy key for Forge.
 - The Forge deploy script in the repository (`deploy/forge-deploy.sh`), including the step that shares `storage/` across releases.

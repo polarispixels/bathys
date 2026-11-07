@@ -111,7 +111,7 @@ Every issue gets one label from each group, the same convention as Bubbles and R
 
 ### Milestones
 
-One [milestone](https://github.com/polarispixels/bathys/milestones) per phase in the spec: **Phase 1: Shelf and ladder**, **Phase 2: MCP and research**, **Phase 3: Relationships and discovery**. Every triaged issue belongs to one. MoSCoW labels are read against the issue's milestone: `must-have` means "Phase 1 can't ship without it" for a Phase 1 issue.
+One [milestone](https://github.com/polarispixels/bathys/milestones) per phase in the spec, **Phase 1: Catalog** and **Phase 2: MCP**, plus **Later** for deferred work that isn't scheduled. Every triaged issue belongs to one. MoSCoW labels are read against the issue's milestone: `must-have` means "Phase 1 can't ship without it" for a Phase 1 issue.
 
 ### Filing an issue
 

@@ -27,8 +27,8 @@ Bathys is a private, single-user reading tool that measures depth reached in a b
 3. **Test first.** Every behavior change starts with a failing test. Every bug fix gets a regression test.
 4. **Tests make zero external calls.** Stray HTTP fails the suite. External services are faked or reached through a port.
 5. **No secrets anywhere in the repo, in commands, or in permission rules.** Refer to secrets by environment variable name. See [Secrets](docs/deployment.md#secrets-and-configuration).
-6. **Product behavior belongs to Ryan.** Domain rules (what counts as a pass, how depth works, what the ladder means) are decided by Ryan and recorded in the spec. Technical choices may be recommended and recorded as ADRs.
-7. **Stay in the current phase.** Features listed as later phases in the spec or roadmap are not built as side effects of other work.
+6. **Product behavior belongs to Ryan.** Domain rules (what a book's status means, how depth is set, what a category does) are decided by Ryan and recorded in the spec. Technical choices may be recommended and recorded as ADRs.
+7. **Stay in the current phase.** Bathys is a book catalog. Features in the spec's [Later](docs/spec.md#later) section (passes, sessions, checklists, sections, shelf-photo import, and more) are not built or reintroduced as side effects of other work.
 8. **Verify before claiming done.** Run the checks and show the output. A deploy is done when the live version string matches the release.
 9. **Plain writing.** No em dashes in user-facing copy or in docs; use a comma, colon, parentheses, or a period. Explain the *why* in code comments only where a learner would otherwise get stuck.
 
@@ -106,7 +106,6 @@ Full routing, with reasons and costs: [`docs/ai-tooling.md`](docs/ai-tooling.md)
 ## Known traps
 
 - **The production server hosts other sites,** including polarispixels.com itself. SSH as `forge@` and confirm you are in `/home/forge/bathys.polarispixels.com/current` before any artisan command. The `polaris` SSH alias reaches this server; Bubbles is on a different one.
-- **`sessions` is Laravel's table** (HTTP sessions). Ours is `reading_sessions`. The domain says *pass* and *session*; keep them distinct (spec: Passes and Sessions).
 - **Inertia props are a second serialization path.** They must go through the JSON:API resources ([ADR-0008](docs/adr/0008-web-ui-shares-the-api-contract.md)), or the contract quietly stops covering the web UI.
 - **Two `Book` classes would confuse everyone.** Eloquent models carry a `Record` suffix (`BookRecord`).
 - **`boost:install` run non-interactively records no agents,** and `boost:update` then refuses to run. `boost.json` must list `"agents": ["claude_code"]`. The installer also writes a Windows-side `wsl.exe` command into `.mcp.json`; ours runs `php artisan boost:mcp` from the project root.
