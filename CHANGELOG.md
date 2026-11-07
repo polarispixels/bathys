@@ -6,10 +6,19 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-07
+
+A public "coming soon" page, and the app made safe to put on the internet.
+
 ### Added
+- Coming-soon page at `/`: the name, its meaning, and one sentence on what Bathys does. Replaces the starter kit's welcome page.
+- Tests proving registration is unavailable (`GET` and `POST /register` return 404).
 - Local Postgres 17 in Docker (`compose.yaml`, port 5433), with a separate `bathys_test` database.
 - ADR-0010: host at `bathys.polarispixels.com` on the main Forge server, set up like Bubbles and Bows.
 - Issue label convention (MoSCoW, effort, type), matching Ryan's other projects.
+
+### Removed
+- Public registration (Fortify's registration feature, the register page, and the login page's "Sign up" link). Bathys has one user, created on the server.
 
 ### Changed
 - CI runs Node 22, the version on both Forge servers.

@@ -161,7 +161,10 @@ return [
     */
 
     'features' => [
-        Features::registration(),
+        // Registration is off: Bathys has exactly one user, created on the
+        // server (see docs/deployment.md). Turning this back on would let
+        // anyone on the internet create an account.
+        // Features::registration(),
         Features::resetPasswords(),
         Features::emailVerification(),
         Features::twoFactorAuthentication([
