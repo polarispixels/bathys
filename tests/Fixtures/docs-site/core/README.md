@@ -1,0 +1,3 @@
+# core/: fixture
+
+The core.

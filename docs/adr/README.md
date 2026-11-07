@@ -59,6 +59,7 @@ A guiding observation: the lines between technology stacks are getting blurrier 
 | [0008](0008-web-ui-shares-the-api-contract.md) | The Web UI Shares the API Contract | Accepted |
 | [0009](0009-mcp-server-inside-laravel.md) | The MCP Server Lives Inside the Laravel App | Accepted (Phase 2) |
 | [0010](0010-host-on-a-polarispixels-subdomain.md) | Host on a polarispixels.com Subdomain, on the Main Forge Server | Accepted (step 17) |
+| [0011](0011-docs-site-rendered-from-the-repository.md) | Serve the Documentation Site from the Repository's Markdown | Accepted |
 
 ## Origin
 

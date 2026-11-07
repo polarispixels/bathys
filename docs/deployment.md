@@ -86,12 +86,12 @@ Not set up yet; tracked in [#9](https://github.com/polarispixels/bathys/issues/9
 
 ### Forge API token
 
-Setup and operations through Forge's API (not routine deploys, which use the deploy hook) use a token saved at `~/.config/forge/token` on Ryan's machine, readable only by him. It is used as `$(cat ~/.config/forge/token)`, so its value never appears in a command or log. Its scopes are deliberately narrow:
+Setup and operations through Forge's API (not routine deploys, which use the deploy hook) use a token kept outside the repository on Ryan's machine, readable only by him. It is read from a file at call time, so its value never appears in a command or log. Its scopes are deliberately narrow:
 
 - **Server:** `server:view`, `server:create-databases`
 - **Site:** `site:create`, `site:meta`, `site:manage-deploys`, `site:manage-project`, `site:manage-environment`, `site:manage-ssl`
 
-It can't delete sites or servers, add SSH keys, or run commands. Created November 7, 2026 with about a 90-day expiry; renewal is [#11](https://github.com/polarispixels/bathys/issues/11). The worker and scheduler ([#9](https://github.com/polarispixels/bathys/issues/9)) will need scopes it doesn't have.
+It can't delete sites or servers or add SSH keys, but it is not harmless: `site:manage-deploys` lets it replace the deploy script and trigger a deploy, which runs shell commands as `forge` on the server, and `site:manage-environment` lets it read the environment file. Treat it like server access. The token is kept outside the repository and expires; renewal is [#11](https://github.com/polarispixels/bathys/issues/11). The worker and scheduler ([#9](https://github.com/polarispixels/bathys/issues/9)) will need scopes it doesn't have.
 
 When reading site details from the API, never print the `deployment_url` field: it contains the deploy hook's secret token.
 
@@ -130,6 +130,8 @@ Every variable is listed, with a comment and without a real value, in `.env.exam
 | Variable | Secret? | Lives in (local / CI / production) | Notes |
 |---|---|---|---|
 | `APP_KEY` | Yes | `.env` / generated per run / Forge environment | Encrypts sessions and cookies; rotating it signs Ryan out |
+| `APP_URL` | No | `.env` / CI default / Forge | The public base URL; `/llms.txt` and absolute links are built from it |
+| `DOCS_REPOSITORY_URL` | No | `.env` / unset / Forge | Defaults to the public GitHub repository; set empty to turn repository links off |
 | `DB_*` | Password is | `.env` / CI service defaults / Forge | |
 | AI provider key | Yes | `.env` / never (tests fake it) / Forge | Not used in version 1; needed only if shelf-photo import or review summaries return from [Later](spec.md#later) |
 | Metadata source (Open Library) | No key | | If Google Books is added later, its key is a secret |

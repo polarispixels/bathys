@@ -6,6 +6,25 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+### Added
+- `/llms.txt`, a plain-text map of the documentation for language models, and pointers to the docs site in the README, CLAUDE.md, and the development guide.
+- A self-updating "Where things stand" block on the docs front page, built from the changelog and the roadmap tables on every request.
+- The documentation site at `/docs`: every repository document rendered as a public page with a sidebar, each also served as raw markdown at `/docs/<slug>.md`, styled with `@tailwindcss/typography`.
+- `App\Docs\MarkdownRenderer`, which renders documentation markdown with GitHub-style heading ids, stripped raw HTML, and relative links rewritten to site pages or GitHub.
+- `App\Docs\DocsCatalog`, the list of documentation pages for the `/docs` site, built by scanning the repository so a new document needs no registration.
+- Design, ADR-0011, and plan for the documentation site at `/docs`, rendered from the repository's markdown with a self-updating front page (`docs/designs/2026-11-07-docs-site-design.md`, `docs/plans/2026-11-07-docs-site.md`). Built first, before the domain core, as a quick win.
+- Design for the domain core, Phase 1 step 1a (`docs/designs/2026-11-07-domain-core-design.md`): the book, its value objects, status, depth, and categories as plain PHP. Spec v0.5 records the three decisions it raised (Decisions Log 17 to 19).
+- `composer.json` declares `ext-intl` and `ext-mbstring`, which the domain core's Unicode normalization needs.
+
+### Security
+- Docs routes run without sessions or CSRF, are rate limited, and send a public five-minute cache header; symlinked files under `docs/` are never served.
+
+### Fixed
+- The docs front page renders status cells as inline markdown (a badge for the first word, then the rest), and the docs header links back to the front page.
+
+### Changed
+- The domain core design applies a Claude Desktop review: NFC normalization and Unicode whitespace for every text value, `https`-only cover URLs, `addedAt` in UTC, and `Depth::tryFrom()` at the edges.
+
 ## [0.3.0] - 2026-11-07
 
 The re-scope to a book catalog, the production pipeline, and the tooling for the build. Live at https://bathys.polarispixels.com.

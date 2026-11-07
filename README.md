@@ -42,6 +42,8 @@ The architecture is deliberately more structured than a typical Laravel app. Whe
 
 **v0.3.0 is live** at https://bathys.polarispixels.com: a coming-soon page showing the icon and the version, with public registration closed. Merges to `main` deploy automatically once CI passes. Catalog features start with the domain core, Phase 1 step 1a. See [`docs/roadmap.md`](docs/roadmap.md).
 
+Docs: https://bathys.polarispixels.com/docs, rendered from this repository's `docs/` folder.
+
 ## Running it locally
 
 Requires PHP 8.4, Composer, Node 22 or newer, and Docker (for Postgres).

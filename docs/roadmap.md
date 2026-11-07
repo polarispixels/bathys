@@ -12,7 +12,7 @@ Phase scope comes from [the spec's phasing](spec.md#suggested-phasing). Steps co
 
 | Item | Status |
 |---|---|
-| Product spec (now v0.4), ADR-0001 to ADR-0010, README | done (docs only) |
+| Product spec (now v0.5), ADR-0001 to ADR-0010, README | done (docs only) |
 | Development method, deployment and secrets, CLAUDE.md, roadmap, changelog | done (docs only) |
 | Production at https://bathys.polarispixels.com (Forge, zero-downtime, Let's Encrypt) and the CI deploy job | done: live since v0.2.0; the CI deploy job and the Forge setup shipped in v0.3.0 |
 | Issue tracking (milestones, issue forms, triage) and AI tooling (`docs/ai-tooling.md`, four subagents, project plugins) | done v0.3.0 |
@@ -22,7 +22,8 @@ Phase scope comes from [the spec's phasing](spec.md#suggested-phasing). Steps co
 | Step | Item | Status |
 |---|---|---|
 | 0 | Scaffold Laravel 13 (React starter kit, Pest, Postgres, Boost, Pint, Larastan); `core/` autoload; architecture tests; version/changelog sync test; CI workflow without deploy | done v0.1.0: scaffold committed untouched, then PHP 8.4 pinned, Boost (Claude Code only), `core/` with dependency rules proven against a planted violation, release-consistency test, version meta tag, CI with Postgres (Postgres 18 since, matching production). CI has run on every push since the GitHub repository was created November 7, 2026. Local Postgres runs in Docker (`compose.yaml`). |
-| 1a | Domain core: `Book`, `BookId`, `Title`, `Author`, `Isbn` (validated ISBN-10 and ISBN-13), `CoverUrl`, `Status` (shelf or wanted), `Category`, `Depth` (0 to 5) | next |
+| docs | Documentation site at `/docs`, rendered from the repository's markdown with a self-updating front page ([design](designs/2026-11-07-docs-site-design.md), [ADR-0011](adr/0011-docs-site-rendered-from-the-repository.md)) | next (built first, as a quick win) |
+| 1a | Domain core: `Book`, `BookId`, `Title`, `Author`, `Isbn` (validated ISBN-10 and ISBN-13), `CoverUrl`, `Status` (shelf or wanted), `Category`, `Depth` (0 to 5) | designed ([design](designs/2026-11-07-domain-core-design.md)); next after the docs site |
 | 1b | Application layer: ports, in-memory doubles, shared repository suite; use cases to add, edit, and remove a book, move it between the wishlist and the shelf, categorize it, set its depth, manage categories, and list and filter the shelf and the wishlist | planned |
 | 1c | OpenAPI contract for Phase 1 resources (**review checkpoint with Ryan**) | planned |
 | 1d | Persistence: migrations, `*Record` models, mappers, Eloquent repositories, composition root | planned |
