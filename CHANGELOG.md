@@ -6,6 +6,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+### Added
+- Production: https://bathys.polarispixels.com on Forge (polished-monaco), zero-downtime deployments, Let's Encrypt for the domain and `www`, a read-only GitHub deploy key for Forge.
+- The Forge deploy script in the repository (`deploy/forge-deploy.sh`), including the step that shares `storage/` across releases.
+- A CI `deploy` job: after the checks pass on `main`, it calls the Forge deploy hook and waits until the live version matches `package.json`. It skips with a warning until the `FORGE_DEPLOY_HOOK` secret exists.
+
+### Changed
+- Postgres 18 locally and in CI, matching production (polished-monaco runs 18, not 17).
+
 ## [0.2.0] - 2026-11-07
 
 A public "coming soon" page, and the app made safe to put on the internet.
