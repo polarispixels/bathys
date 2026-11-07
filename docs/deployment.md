@@ -144,7 +144,7 @@ Bathys has one user and signs in with a passkey. There is no public registration
 The site went live early (November 7, 2026) for a coming-soon page. Done items are struck through.
 
 1. ~~Create the GitHub repository (private), the Forge site on `polished-monaco` with zero-downtime deployments and the repository, the DNS records, and the Let's Encrypt certificate.~~ Done November 7, 2026.
-2. ~~Leave Forge's push-to-deploy off.~~ Done. Store the Forge deploy hook URL as the `FORGE_DEPLOY_HOOK` GitHub secret: **pending Ryan's approval**, since writing a credential into GitHub's secret store needs his explicit go-ahead. Until then CI's deploy job skips, and deploys are triggered from Forge.
+2. ~~Leave Forge's push-to-deploy off; store the deploy hook as the `FORGE_DEPLOY_HOOK` GitHub secret.~~ Done November 7, 2026. CI's deploy job verified end to end (Forge deployment 82378358).
 3. ~~PHP 8.4 on the site.~~ Done. The worker and scheduler get the same version when they are added (step 23).
 4. ~~Production environment values.~~ Done (app URL, production mode, Postgres credentials, secure cookies).
 5. ~~First deploy.~~ Done (deployment 82377813). Before 1.0: create the single user on the server and register a passkey.
