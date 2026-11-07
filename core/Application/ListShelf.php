@@ -10,7 +10,8 @@ use Bathys\Ports\BookRepository;
 /**
  * A use case: show what is on the shelf, ordered by title with case ignored.
  * Sorting lives here, not in the repository, so every storage gives the same
- * order. PHP's sort is stable, so books with equal titles keep their order.
+ * order. Books with equal titles are ordered by id; a UUID v7 follows the time
+ * it was made, so same-title books keep a stable order across page loads.
  */
 final class ListShelf
 {
@@ -23,7 +24,8 @@ final class ListShelf
 
         usort(
             $shelf,
-            static fn (Book $a, Book $b): int => mb_strtolower($a->title()->toString()) <=> mb_strtolower($b->title()->toString()),
+            static fn (Book $a, Book $b): int => [mb_strtolower($a->title()->toString()), $a->id()->toString()]
+                <=> [mb_strtolower($b->title()->toString()), $b->id()->toString()],
         );
 
         return $shelf;

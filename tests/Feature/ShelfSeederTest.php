@@ -8,6 +8,7 @@ use Bathys\Application\AddBook;
 use Bathys\Application\ListShelf;
 use Bathys\Domain\Book\Author;
 use Bathys\Domain\Book\Book;
+use Bathys\Domain\Book\BookId;
 use Bathys\Domain\Book\Title;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -28,6 +29,13 @@ it('seeds the eight books through the use case', function () {
     $adler = collect($shelf)->first(fn (Book $book): bool => $book->title()->toString() === 'How to Read a Book');
     expect(array_map(fn (Author $a): string => $a->toString(), $adler->authors()))
         ->toBe(['Mortimer J. Adler', 'Charles Van Doren']);
+});
+
+it('gives migration-inserted books a valid id and a UTC added-at', function () {
+    foreach (app(ListShelf::class)->execute() as $book) {
+        expect(BookId::fromString($book->id()->toString()))->toBeInstanceOf(BookId::class)
+            ->and($book->addedAt()->getOffset())->toBe(0);
+    }
 });
 
 it('is idempotent', function () {

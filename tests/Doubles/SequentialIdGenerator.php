@@ -8,9 +8,9 @@ use Bathys\Domain\Book\BookId;
 use Bathys\Ports\IdGenerator;
 
 /**
- * A double for the id generator that counts up: ...0001, ...0002, and so on.
- * Predictable ids let a test name the exact id it expects. It is a working
- * stand-in, not a mock that verifies calls.
+ * A fake id generator that counts up: ...0001, ...0002, and so on.
+ * Predictable ids let a test name the exact id it expects. It is a fake (one
+ * kind of test double); unlike a mock, it does not check which calls happened.
  */
 final class SequentialIdGenerator implements IdGenerator
 {

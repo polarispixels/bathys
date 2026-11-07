@@ -10,7 +10,8 @@ use Illuminate\Support\Carbon;
 /**
  * The database row for a book. This is persistence only: the real Book, with
  * its rules, lives in core/. The suffix "Record" keeps the two apart, and only
- * the persistence adapter may touch this class (an architecture test checks).
+ * the persistence adapter, factories, and seeders may touch this class (an
+ * architecture test checks).
  *
  * @property string $id
  * @property string $title
@@ -28,7 +29,7 @@ final class BookRecord extends Model
 
     protected $keyType = 'string';
 
-    protected $guarded = [];
+    protected $fillable = ['id', 'title', 'authors', 'status', 'added_at'];
 
     // Writing the UTC offset ("+00:00") with every timestamp keeps the stored
     // instant independent of the database session's time zone.

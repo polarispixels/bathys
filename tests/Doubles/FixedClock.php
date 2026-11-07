@@ -7,9 +7,9 @@ namespace Tests\Doubles;
 use Bathys\Ports\Clock;
 
 /**
- * A double for the clock that always says the same moment, so a test can
- * check an exact time. It returns a value instead of recording calls, which
- * is what separates a double from a mock.
+ * A stub clock that always says the same moment, so a test can check an
+ * exact time. It is a fake (one kind of test double); unlike a mock, it does
+ * not check which calls happened.
  */
 final class FixedClock implements Clock
 {

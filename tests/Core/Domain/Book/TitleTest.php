@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Bathys\Domain\Book\InvalidTitle;
 use Bathys\Domain\Book\Title;
+use Bathys\Domain\InvalidText;
 
 it('keeps a title as typed after trimming and collapsing whitespace', fn () => expect(Title::fromString('  How to  Read a Book ')->toString())->toBe('How to Read a Book'));
 it('treats a non-breaking space as whitespace', fn () => expect(Title::fromString("How to\u{00A0}Read")->toString())->toBe('How to Read'));
@@ -11,3 +12,5 @@ it('normalizes composed and decomposed accents to the same title', fn () => expe
 it('rejects a blank title', fn (string $blank) => Title::fromString($blank))->with(['', '   ', "\u{00A0}\u{00A0}"])->throws(InvalidTitle::class);
 it('compares titles exactly after normalization', fn () => expect(Title::fromString('Good to Great')->equals(Title::fromString('good to great')))->toBeFalse());
 it('accepts a title of "0" as a real title', fn () => expect(Title::fromString('0')->toString())->toBe('0'));
+it('rejects control characters', fn (string $bad) => Title::fromString($bad))->with(["a\0b", "a\u{202E}b", "a\u{2067}b"])->throws(InvalidText::class);
+it('treats a tab inside a title as whitespace', fn () => expect(Title::fromString("How to\tRead")->toString())->toBe('How to Read'));

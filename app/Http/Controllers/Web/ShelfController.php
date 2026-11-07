@@ -9,6 +9,10 @@ use Bathys\Application\ListShelf;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * A driving adapter: it calls a use case and hands the result to the resource.
+ * It never sees a repository or a model, and an architecture test enforces that.
+ */
 final class ShelfController
 {
     public function __invoke(ListShelf $listShelf): Response

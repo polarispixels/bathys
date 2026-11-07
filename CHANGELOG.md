@@ -6,6 +6,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+### Security
+- `BookId` rejects a trailing newline; titles and authors reject control and bidirectional control characters; the home page is rate limited (60 a minute); `BookRecord` lists its fillable columns instead of allowing everything.
+
+### Changed
+- The seed migration writes the first shelf rows directly, so later schema changes cannot break fresh databases.
+
 ### Fixed
 - `llms.txt` summaries fall back to a document's first labeled line when it has no plain paragraph, so plan documents no longer get an empty description.
 

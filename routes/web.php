@@ -9,7 +9,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-Route::get('/', ShelfController::class)->name('home');
+Route::get('/', ShelfController::class)->middleware('throttle:60,1')->name('home');
 
 // Public documentation site. Stateless (no session, CSRF, or cookies), so the
 // responses are cacheable and a crawler cannot create session rows.

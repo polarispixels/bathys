@@ -20,6 +20,12 @@ final class Text
         $trimmed = preg_replace('/^\s+|\s+$/u', '', $text) ?? '';
         $collapsed = preg_replace('/\s+/u', ' ', $trimmed) ?? '';
 
+        // Whitespace (tabs and newlines included) is already collapsed above, so
+        // what is left is a control character or a bidi control: refuse it.
+        if (preg_match('/[\p{Cc}\x{202A}-\x{202E}\x{2066}-\x{2069}]/u', $collapsed) === 1) {
+            throw InvalidText::controlCharacters();
+        }
+
         // Compare with false, not truthiness: the string "0" is a valid value.
         $normalized = \Normalizer::normalize($collapsed, \Normalizer::FORM_C);
 

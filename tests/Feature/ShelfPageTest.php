@@ -45,3 +45,11 @@ it('gives the page the package.json version to display', function () {
     $this->get('/')
         ->assertInertia(fn (Assert $page) => $page->where('appVersion', $version));
 });
+
+it('rate limits the home page', function () {
+    $this->get('/')->assertHeader('X-RateLimit-Limit', '60');
+});
+
+it('serves addedAt in UTC', function () {
+    $this->get('/')->assertInertia(fn (Assert $page) => $page->where('books.data.0.attributes.addedAt', fn ($value) => str_ends_with((string) $value, '+00:00')));
+});

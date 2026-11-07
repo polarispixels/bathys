@@ -47,7 +47,7 @@ npm run build           # production frontend build
 npm run contract:types   # regenerate resources/js/types/api.d.ts from contracts/openapi.yaml
 ```
 
-Test suites (`phpunit.xml`): `Core`, `Architecture`, `Unit`, `Feature`. PHP is pinned to 8.4 everywhere ([deployment](docs/deployment.md#php-version-one-number-everywhere)).
+Test suites (`phpunit.xml`): `Core`, `Architecture`, `Unit`, `Adapters`, `Feature`. PHP is pinned to 8.4 everywhere ([deployment](docs/deployment.md#php-version-one-number-everywhere)).
 
 ## Laravel Boost
 
