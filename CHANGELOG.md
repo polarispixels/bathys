@@ -6,6 +6,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ## [Unreleased]
 
+### Added
+- Local Postgres 17 in Docker (`compose.yaml`, port 5433), with a separate `bathys_test` database.
+- ADR-0010: host at `bathys.polarispixels.com` on the main Forge server, set up like Bubbles and Bows.
+- Issue label convention (MoSCoW, effort, type), matching Ryan's other projects.
+
+### Changed
+- CI runs Node 22, the version on both Forge servers.
+- The spec's last open question (domain name) is answered.
+
 ## [0.1.0] - 2026-11-07
 
 Foundations: the documents, the scaffold, and the guards that keep the architecture honest. No reading features yet.

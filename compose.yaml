@@ -1,0 +1,33 @@
+# Local development database only. PHP, Composer, and Node run natively in WSL;
+# Docker runs just Postgres, matching production's major version (17).
+#
+#   docker compose up -d      start it (data persists in the bathys_pgdata volume)
+#   docker compose down       stop it (data kept)
+#   docker compose down -v    stop it and erase the data
+#
+# Host port 5433, not 5432, so it can run alongside polaris-pixels' container.
+# The credentials are for this local container only; they are not secrets.
+
+name: bathys
+
+services:
+    postgres:
+        image: postgres:17
+        environment:
+            POSTGRES_DB: bathys
+            POSTGRES_USER: bathys
+            POSTGRES_PASSWORD: bathys
+        ports:
+            - '5433:5432'
+        volumes:
+            - bathys_pgdata:/var/lib/postgresql/data
+            # Creates bathys_test on first start, for adapter and contract tests.
+            - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U bathys -d bathys']
+            interval: 5s
+            timeout: 5s
+            retries: 10
+
+volumes:
+    bathys_pgdata:

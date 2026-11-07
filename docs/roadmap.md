@@ -43,4 +43,4 @@ From the spec: Kindle highlight import; StoryBank and COMPASS integrations; mapp
 
 ## Open questions
 
-- Domain name (spec, Open Questions).
+None. (The domain was settled November 7, 2026: `bathys.polarispixels.com`, [ADR-0010](adr/0010-host-on-a-polarispixels-subdomain.md).)

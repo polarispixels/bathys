@@ -36,6 +36,7 @@ Bathys is a private, single-user reading tool that measures depth reached in a b
 Every command here has been run in this repo. Keep it that way: never document a command you haven't run.
 
 ```bash
+docker compose up -d    # local Postgres 17 on :5433 (NOT YET RUN: needs Docker Desktop's WSL integration)
 composer dev            # server, queue, logs, and Vite together
 composer test           # Pint check + Larastan (level 7) + the whole Pest suite
 composer ci:check       # what CI runs: frontend lint/format, TypeScript, then composer test
@@ -92,6 +93,7 @@ Kept here, not in a skill, because it must run on every release. Details: [Versi
 
 ## Known traps
 
+- **The production server hosts other sites,** including polarispixels.com itself. SSH as `forge@` and confirm you are in `/home/forge/bathys.polarispixels.com/current` before any artisan command. The `polaris` SSH alias reaches this server; Bubbles is on a different one.
 - **`sessions` is Laravel's table** (HTTP sessions). Ours is `reading_sessions`. The domain says *pass* and *session*; keep them distinct (spec: Passes and Sessions).
 - **Inertia props are a second serialization path.** They must go through the JSON:API resources ([ADR-0008](docs/adr/0008-web-ui-shares-the-api-contract.md)), or the contract quietly stops covering the web UI.
 - **Two `Book` classes would confuse everyone.** Eloquent models carry a `Record` suffix (`BookRecord`).

@@ -95,6 +95,20 @@ Rules:
 
 ---
 
+## Issues and labels
+
+**The roadmap is the plan; GitHub Issues are the inbox.** Bugs, ideas, and playtest notes (often filed from a phone) go in [Issues](https://github.com/polarispixels/bathys/issues). During planning, fold each one into the roadmap or a design, then close it with a link.
+
+Every issue gets one label from each group, the same convention as Bubbles and Ryan's other projects:
+
+| Group | Labels | Answers |
+|---|---|---|
+| **MoSCoW** | `moscow: must-have`, `should-have`, `could-have`, `wont-have` | Does the current release need it? (Milestone-scoped: revisit when the release changes.) |
+| **Effort** | `effort: small` (an hour), `medium` (half a day), `large` (multi-session) | How big is it? |
+| **Type** | `type: bug`, `feature`, `content`, `ops` | What kind of work? |
+
+`must-have` plus `small` is an obvious quick win; `wont-have` plus `large` is the bottom of the pile. Commits that resolve an issue say `Closes #N` in the body.
+
 ## Branches and commits
 
 - **`main`** is always deployable. Nothing merges without green CI.

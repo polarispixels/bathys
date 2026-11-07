@@ -281,7 +281,7 @@ All questions below were answered on November 7, 2026. Questions 1 to 8 come fro
 | 4 | Audiobooks and Kindle? | Physical, ebook, and audio all climb the same ladder; format is just a facet. Kindle highlight import is a later phase. |
 | 5 | Focus aids? | Gentle end-of-session chime, one checklist step at a time, "where was I" prompt on reopen, and dim/low-light mode. See [Focus Aids](#focus-aids). |
 | 6 | Connection to existing systems? | StoryBank, COMPASS, and work-topic integrations are nice-to-have, later phase, not v1. |
-| 7 | Name and domain? | Name: **Bathys**. Domain: still open. |
+| 7 | Name and domain? | Name: **Bathys**. Domain: **`bathys.polarispixels.com`** (decided November 7, 2026; [ADR-0010](adr/0010-host-on-a-polarispixels-subdomain.md)). |
 | 8 | Stack confirmation? | Confirmed, with changes: Laravel 13, Postgres, Inertia with React and TypeScript, Tailwind, Forge, passkey auth, hexagonal architecture, JSON:API with an OpenAPI contract, MCP server, Laravel Boost. See [Architecture and Stack](#architecture-and-stack). |
 | 9 | Must books climb the ladder in order? | No. Any level can be recorded at any time, after the fact; depth is the highest level recorded. See [Any level, any time, after the fact](#any-level-any-time-after-the-fact). |
 | 10 | When does shelf-photo import ship? | End of Phase 1, after title search and barcode scan, since it is the expected first import. |
@@ -290,7 +290,7 @@ All questions below were answered on November 7, 2026. Questions 1 to 8 come fro
 
 ## Open Questions
 
-1. **Domain name** for the deployed app.
+None at the moment. New questions are added here as they come up.
 
 ---
 
